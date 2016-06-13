@@ -1,0 +1,289 @@
+--gui
+function wp_open_help()
+    img = paintutils.loadImage("programs/wordpad/images/help.png")
+    paintutils.drawImage(img, 9, 4)
+    term.setCursorBlink(false)
+    term.setCursorPos(12, 4)
+    term.setBackgroundColor(colors.gray)
+    term.setTextColor(colors.white)
+    write("WordPad - help")
+    term.setBackgroundColor(colors.white)
+    term.setTextColor(colors.lightGray)
+    term.setCursorPos(10, 5)
+    write("creator:")
+    term.setTextColor(colors.black)
+    write(" mnsbabydoll")
+end
+
+function wp_convert_int(num)
+    if num > 1 and num < 11 then
+        if wp_leftShift or wp_rightShift then
+            if num == 2 then write("!")
+            elseif num == 3 then write("@")
+            elseif num == 4 then write("#")
+            elseif num == 5 then write("$")
+            elseif num == 6 then write("%")
+            elseif num == 7 then write("^")
+            elseif num == 8 then write("&")
+            elseif num == 9 then write("*")
+            elseif num == 10 then write("(")
+            end
+        else
+            write(num - 1)
+        end
+    elseif num == 205 then
+        write("")
+    elseif num == 203 then
+        wp_x = wp_x - 2
+    elseif num == 200 then
+        wp_y = wp_y - 1
+        wp_x = wp_x - 1
+    elseif num == 208 then
+        wp_y = wp_y + 1
+        wp_x = wp_x - 1
+    elseif num == 14 and wp_x > 1 then
+        wp_x = wp_x - 1
+        term.setCursorPos(wp_x + 4, wp_y + 1)
+        write(" ")
+        wp_x = wp_x - 1
+        term.setCursorPos(wp_x + 4, wp_y + 1)
+    elseif num == 59 then
+        wp_open_help()
+    elseif num == 11 and (wp_leftShift or wp_rightShift) then
+        write(")")
+    elseif num == 11 or num == 82 then
+        write("0")
+    elseif num == 39 then
+        if wp_leftShift or wp_rightShift then
+            write(":")
+        else
+            write(";")
+        end
+    elseif num == 40 then
+        if wp_leftShift or wp_rightShift then
+            write("\"")
+        else
+            write("'")
+        end
+    elseif num == 28 then
+        write(" ")
+        wp_x = 0
+        wp_y = wp_y + 1
+        term.setCursorPos(wp_x + 5, wp_y + 1)
+    elseif num == 57 then
+        write(" ")
+    elseif num > 78 and num < 82 then
+        write(num - 78)
+    elseif num > 74 and num < 78 then
+        write(num - 71)
+    elseif num > 70 and num < 74 then
+        write(num - 64)
+    elseif num == 13 then
+        if wp_rightShift or wp_leftShift then
+            write("+")
+        else
+            write("=")
+        end
+    elseif num == 78 then
+        write("+")
+    elseif num == 55 then
+        write("*")
+    elseif num == 12 then
+        if wp_rightShift or wp_leftShift then
+            write("_")
+        else
+            write("-")
+        end
+    elseif num == 15 then
+        write("    ")
+        wp_x = wp_x + 3
+    elseif num == 51 then
+        if wp_leftShift or wp_rightShift then
+            write("<")
+        else
+            write(",")
+        end
+    elseif num == 52 then
+        if wp_leftShift or wp_rightShift then
+            write(">")
+        else
+            write(".")
+        end
+    elseif num == 53 then
+        if wp_leftShift or wp_rightShift then
+            write("?")
+        else
+            write("/")
+        end
+    elseif num == 43 then
+        if wp_leftShift or wp_rightShift then
+            write("|")
+        else
+            write("\\/")
+            term.setCursorPos(wp_x + 5, wp_y + 1)
+            write(" ")
+            term.setCursorPos(wp_x + 5, wp_y + 1)
+        end
+    
+    else
+        write(keys.getName(num))
+        --write(num)
+    end
+    wp_x = wp_x + 1
+    if wp_y > 0 and wp_y < 17 then
+        if wp_x == 48 then
+            wp_x = 1
+            wp_y = wp_y + 1
+        end
+        term.setCursorPos(wp_x + 4, wp_y + 1)
+    end
+end
+
+function wp_print_GUI()
+    img = paintutils.loadImage("programs/wordpad/images/bg.png")
+    paintutils.drawImage(img, 1, 1)
+    
+    term.setBackgroundColor(colors.gray)
+    term.setTextColor(colors.white)
+    term.setCursorPos(7, 1)
+    write("WordPad V 1.0 - ")
+    write(wp_filename)
+    term.setCursorPos(50, 1)
+    term.setTextColor(colors.black)
+    term.setBackgroundColor(colors.green)
+    write("_")
+    term.setBackgroundColor(colors.red)
+    write("X")
+    term.setCursorPos(1, 1)
+    term.setBackgroundColor(colors.lightBlue)
+    term.setTextColor(colors.black)
+    write("File")
+    term.setBackgroundColor(colors.lightGray)
+    term.setCursorPos(1, 2)
+    for i = 1, 17  do
+        print(i)
+    end
+    term.setBackgroundColor(colors.white)
+    term.setTextColor(colors.black)
+end
+
+function wp_start()
+	if win then
+		open_program = true
+		clear_start()
+		hub_number = hub_number + 1
+		term.setCursorPos(4 * hub_number + 4, 19)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.gray)
+		write(" WP ")
+		wp_number = hub_number
+		hub_array[wp_number] = 7
+	end
+	wp_filename = "new.txt"
+	wp_x = 1
+	wp_y = 1
+	wp_leftShift = false
+	wp_rightShift = false
+	wp_text = {}
+	wp = true
+	wp_collapse = false
+	wp_menu = false
+	
+	wp_print_GUI()
+	term.setCursorPos(5, 2)
+	term.setCursorBlink(true)
+end
+
+if fs.exists("/system/apps/modules/windows_API.sys") then
+	shell.run("/system/apps/modules/windows_API.sys")
+elseif fs.exists("/programs/wordpad/windows_API.sys") then
+	shell.run("/programs/wordpad/windows_API.sys")
+else
+	print("You need to download additional libraries. Enter 'y' to download, 'n' to exit.")
+	if read() == "y" then
+		shell.run("pastebin get wfBS5YYf /programs/wordpad/windows_API.sys")
+		shell.run("pastebin get cYxVDHeg /system/images/info_window.png")
+		shell.run("pastebin get LPnnXyxX /system/images/icons/done.png")
+		shell.run("pastebin get mT3F5XUk /system/images/icons/error.png")
+		shell.run("/programs/wordpad/windows_API.sys")
+		sleep(0.5)
+	else
+		local exit = true
+	end
+end
+
+wp_loading = os.startTimer(3)
+create_window(13, 6, "Loading WordPad", "", "", "", "", info, "")
+
+if not (win == true) then --DOS mode
+	while true do
+		local event, id = os.pullEvent("timer")
+		if id == wp_loading then
+			break
+		end
+	end
+	
+	wp_start()
+	
+	term.setCursorPos(20, 19)
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.red)
+	write("DOS mode!!!")
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	term.setCursorPos(5, 2)
+	while true do
+		if exit then
+			term.setBackgroundColor(colors.black)
+			term.setTextColor(colors.white)
+			term.clear()
+			term.setCursorPos(1, 1)
+			term.setCursorBlink(false)
+			break
+		end
+		local event, key, x, y = os.pullEvent()
+		if event == "key" then
+			if key == 42 then
+				wp_leftShift = true
+			elseif key == 54 then
+				wp_rightShift = true
+			else
+				wp_convert_int(key)
+			end
+		end
+		if event == "key_up" then
+			if key == 42 then
+				wp_leftShift = false
+			elseif key == 54 then
+				wp_rightShift = false
+			end
+		end
+		if event == "mouse_click" then
+			if key == 1 and x == 51 and y == 1 then
+				term.setBackgroundColor(colors.black)
+				term.setTextColor(colors.white)
+				term.clear()
+				term.setCursorPos(1, 1)
+				term.setCursorBlink(false)
+				break
+			elseif key == 1 and x < 5 and y == 1 and wp_menu == false then
+				menu_str = {}
+				menu_str[1] = "New File"
+				menu_str[2] = "Open File"
+				menu_str[3] = "Save Fila"
+				menu_str[4] = "Save As"
+				menu_str[5] = "---"
+				menu_str[6] = "About W/P"
+				menu_str[7] = "  Edit"
+				create_menu(1, 2, colors.gray, colors.white)
+				wp_menu = true
+				term.setCursorBlink(false)
+			elseif key == 1 and x < 5 and y == 1 and wp_menu == true then
+				wp_menu = false
+				wp_print_GUI()
+				term.setCursorPos(wp_x + 4, wp_y + 1)
+				term.setCursorBlink(true)
+			end
+		end
+	end
+end
