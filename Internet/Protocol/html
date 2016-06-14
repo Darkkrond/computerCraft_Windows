@@ -1,0 +1,20 @@
+Local function str_ro_array( str )
+    Local dlina = string.len( str )
+    Local result = {}
+    For i = 1, dlina do
+        result[i] = string.char(string.byte(str, i, i))
+    end
+    return result
+end
+
+Local s = fs.open("/system/apps/explorer/www-page.sys", "r")
+Local stroka = s.readline()
+If stroka == "<ee_by_mnsbabydoll>" then
+    While not (stroka == nil) do
+        Local str_array = str_to_array( stroka )
+        --описание команд
+        if str_array[1] == "<" 
+
+        end
+    end
+end
