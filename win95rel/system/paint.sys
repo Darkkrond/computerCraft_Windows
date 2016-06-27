@@ -1,0 +1,340 @@
+function print_GUI()
+	shell.run("/system/apps/modules/windows_API.sys")
+	open_program = true
+	Paint = true
+	img = paintutils.loadImage("system/images/paint_back.png")
+	paintutils.drawImage(img, 1, 1)
+	term.setCursorPos(6, 1)
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	write("Paint V 1.0 alpha - " .. paint_filename)
+	term.setCursorPos(50, 1)
+	term.setBackgroundColor(colors.green)
+	term.setTextColor(colors.black)
+	write("_")
+	term.setBackgroundColor(colors.red)
+	write("X")
+	term.setBackgroundColor(colors.lightGray)
+	term.setTextColor(colors.black)
+	term.setCursorPos(1, 1)
+	write("File")
+	paintutils.drawLine(17, 18, 51, 18, colors.gray)
+	paintutils.drawPixel(51, 18, color)
+	paintutils.drawPixel(50, 18, color_right)
+	term.setBackgroundColor(colors.lightGray)
+	term.setCursorPos(18, 18)
+	write("Line")
+	term.setCursorPos(23, 18)
+	write("Box")
+	term.setCursorPos(27, 18)
+	write("Fill")
+	term.setCursorPos(32, 18)
+	write("Pen")
+	term.setCursorPos(36, 18)
+	write("Clear")
+	term.setCursorPos(42, 18)
+	write("Triangle")
+	
+	backup_mod()
+end
+
+function paint_buttons()
+	if paint_editing == false and x == 51 and y == 1 and Paint and Paint_collapse == false then
+		Paint = false
+		mod = 0
+		hub_array[paint_number] = 0
+		hub_number = hub_number - 1
+		hub_move(paint_number)
+		desktop()
+		paint_pixels = {}
+	elseif x == 50 and y == 1 and Paint and Paint_collapse == false then
+		Paint_collapse = true
+		desktop()
+	elseif y == 19 and Paint and Paint_collapse == false then
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 2) then
+				Paint_collapse = true
+				desktop()
+				test = 9
+			end
+			test = test + 1
+		end
+		paint_menu = false
+	elseif y == 19 and Paint and Paint_collapse then
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 2) then
+				print_GUI()
+				paint_print_image()
+				test = 9
+				Paint_collapse = false
+			end
+			test = test + 1
+		end
+	elseif mod == 1 and Paint and Paint_collapse == false and y > 1 and y < 18 and button == 1 then
+		term.setCursorPos(x, y)
+		term.setBackgroundColor(color)
+		term.setTextColor(color_right)
+		first_x = x
+		first_y = y
+		write("F")
+		sel_1 = true
+		if sel_2 then
+			paintutils.drawLine(first_x, first_y, second_x, second_y, color_fill)
+			sel_1 = false
+			sel_2 = false
+		end
+	elseif mod == 1 and Paint and Paint_collapse == false and y > 1 and y < 18 and button == 2 then
+		term.setCursorPos(x, y)
+		term.setBackgroundColor(color)
+		term.setTextColor(color_right)
+		second_x = x
+		second_y = y
+		write("S")
+		sel_2 = true
+		if sel_1 then
+			paintutils.drawLine(first_x, first_y, second_x, second_y, color_fill)
+			sel_1 = false
+			sel_2 = false
+		end
+	elseif mod == 2 and Paint and Paint_collapse == false and y > 1 and y < 18 and button == 1 then
+		term.setCursorPos(x, y)
+		term.setBackgroundColor(color)
+		term.setTextColor(color_right)
+		first_x = x
+		first_y = y
+		write("F")
+		sel_1 = true
+		if sel_2 then
+			paintutils.drawLine(first_x, first_y, second_x, first_y, color_fill)
+			paintutils.drawLine(first_x, second_y, second_x, second_y, color_fill)
+			paintutils.drawLine(first_x, first_y, first_x, second_y, color_fill)
+			paintutils.drawLine(second_x, first_y, second_x, second_y, color_fill)
+			sel_1 = false
+			sel_2 = false
+		end
+	elseif mod == 2 and Paint and Paint_collapse == false and y > 1 and y < 18 and button == 2 then
+		term.setCursorPos(x, y)
+		term.setBackgroundColor(color)
+		term.setTextColor(color_right)
+		second_x = x
+		second_y = y
+		write("S")
+		sel_2 = true
+		if sel_1 then
+			paintutils.drawLine(first_x, first_y, second_x, first_y, color_fill)
+			paintutils.drawLine(first_x, second_y, second_x, second_y, color_fill)
+			paintutils.drawLine(first_x, first_y, first_x, second_y, color_fill)
+			paintutils.drawLine(second_x, first_y, second_x, second_y, color_fill)
+			sel_1 = false
+			sel_2 = false
+		end
+	elseif x > 17 and x < 22 and y == 18 and Paint and Paint_collapse == false then
+		reset_select()
+		mod = 1
+		if button == 1 then
+			color_fill = color
+		elseif button == 2 then
+			color_fill = color_right
+		end
+		backup_mod()
+	elseif x > 22 and x < 26 and y == 18 and Paint and Paint_collapse == false then
+		reset_select()
+		mod = 2
+		if button == 1 then
+			color_fill = color
+		elseif button == 2 then
+			color_fill = color_right
+		end
+		backup_mod()
+	elseif x > 26 and x < 31 and y == 18 and Paint and Paint_collapse == false then
+		reset_select()
+		mod = 3
+		backup_mod()
+	elseif x > 31 and x < 35 and y == 18 and Paint and Paint_collapse == false then
+		reset_select()
+		mod = 4
+		backup_mod()
+	elseif x > 35 and x < 41 and y == 18 and Paint and Paint_collapse == false then
+		paint_pixels = {}
+		paint_print_image()
+	elseif x < 17 and y == 18 and Paint and Paint_collapse == false then
+		palitra()
+	elseif y > 1 and y < 18 and Paint and Paint_collapse == false and mod == 4 then
+		paint_draw()
+		x = 51
+		y = 19
+	elseif x < 5 and y == 1 and Paint and Paint_collapse == false and paint_menu == false then
+		menu_str = {}
+		menu_str[1] = "New"
+		menu_str[2] = "Open"
+		menu_str[3] = "Save"
+		menu_str[4] = "Save As"
+		menu_str[5] = "---"
+		menu_str[6] = "info"
+		create_menu(1, 2, colors.gray, colors.white)
+		paint_menu = true
+	elseif x < 5 and y == 1 and Paint and Paint_collapse == false and paint_menu == true then
+		paint_print_image()
+		paint_menu = false
+	elseif paint_editing and x == 51 and y == 1 and Paint and Paint_collapse == false then
+		create_window(11, 5, "Image not saved", "Save image?", "   Yes", "   No", "   cancel", "error", nil)
+		mod = 6
+	elseif mod == 6 and Paint and Paint_collapse == false and x > 23 and x < 26 and y == 8 then
+		Paint = false
+		mod = 0
+		hub_array[paint_number] = 0
+		hub_number = hub_number - 1
+		hub_move(paint_number)
+		desktop()
+		paint_pixels = {}
+	elseif mod == 6 and Paint and Paint_collapse == false and x > 23 and x < 30 and y == 9 then
+		paint_print_image()
+		mod = 0
+	end
+end
+
+function paint_print_image()
+	for pix_y = 2, 17 do
+		for pix_x = 1, 51 do
+			if paint_pixels[pix_x + (51 * (pix_y - 2))] == nil then
+				paintutils.drawPixel(pix_x, pix_y, colors.white)
+			else
+				paintutils.drawPixel(pix_x, pix_y, paint_pixels[pix_x + (51 * (pix_y - 2))])
+			end
+		end
+	end
+end
+
+function paint_draw()
+	if button == 1 and paint_menu == false then
+		paintutils.drawPixel(x, y, color)
+		local id = x + (51 * (y - 2))
+		paint_pixels[id] = color
+		paint_editing = true
+	elseif button == 2 and paint_menu == false then
+		paintutils.drawPixel(x, y, color_right)
+		local id = x + (51 * (y - 2))
+		paint_pixels[id] = color_right
+		paint_editing = true
+	end
+end
+
+function reset_select()
+	term.setBackgroundColor(colors.lightGray)
+	term.setTextColor(colors.black)
+	if mod == 1 then
+		term.setCursorPos(18, 18)
+		write("Line")
+	elseif mod == 2 then
+		term.setCursorPos(23, 18)
+		write("Box")
+	elseif mod == 3 then
+		term.setCursorPos(27, 18)
+		write("Fill")
+	elseif mod == 4 then
+		term.setCursorPos(32, 18)
+		write("Pen")
+	elseif mod == 5 then
+		term.setCursorPos(42, 18)
+		write("Triangle")
+	end
+end
+
+function backup_mod()
+	term.setBackgroundColor(colors.cyan)
+	term.setTextColor(colors.red)
+	if mod == 6 then
+		print("")
+	elseif mod == 1 then
+		term.setCursorPos(18, 18)
+		write("Line")
+	elseif mod == 2 then
+		term.setCursorPos(23, 18)
+		write("Box")
+	elseif mod == 3 then
+		term.setCursorPos(27, 18)
+		write("Fill")
+	elseif mod == 4 then
+		term.setCursorPos(32, 18)
+		write("Pen")
+	elseif mod == 5 then
+		term.setCursorPos(42, 18)
+		write("Triangle")
+	end
+end
+
+function palitra()
+	if button == 1 then
+		if x == 1 then
+			color = colors.white
+		elseif x == 2 then
+			color = colors.orange
+		elseif x == 3 then
+			color = colors.magenta
+		elseif x == 4 then
+			color = colors.lightBlue
+		elseif x == 5 then
+			color = colors.yellow
+		elseif x == 6 then
+			color = colors.lime
+		elseif x == 7 then
+			color = colors.pink
+		elseif x == 8 then
+			color = colors.gray
+		elseif x == 9 then
+			color = colors.lightGray
+		elseif x == 10 then
+			color = colors.cyan
+		elseif x == 11 then
+			color = colors.purple
+		elseif x == 12 then
+			color = colors.blue
+		elseif x == 13 then
+			color = colors.brown
+		elseif x == 14 then
+			color = colors.green
+		elseif x == 15 then
+			color = colors.red
+		elseif x == 16 then
+			color = colors.black
+		end
+		paintutils.drawPixel(51, 18, color)
+	elseif button == 2 then
+		if x == 1 then
+			color_right = colors.white
+		elseif x == 2 then
+			color_right = colors.orange
+		elseif x == 3 then
+			color_right = colors.magenta
+		elseif x == 4 then
+			color_right = colors.lightBlue
+		elseif x == 5 then
+			color_right = colors.yellow
+		elseif x == 6 then
+			color_right = colors.lime
+		elseif x == 7 then
+			color_right = colors.pink
+		elseif x == 8 then
+			color_right = colors.gray
+		elseif x == 9 then
+			color_right = colors.lightGray
+		elseif x == 10 then
+			color_right = colors.cyan
+		elseif x == 11 then
+			color_right = colors.purple
+		elseif x == 12 then
+			color_right = colors.blue
+		elseif x == 13 then
+			color_right = colors.brown
+		elseif x == 14 then
+			color_right = colors.green
+		elseif x == 15 then
+			color_right = colors.red
+		elseif x == 16 then
+			color_right = colors.black
+		end
+		paintutils.drawPixel(50, 18, color_right)
+	end
+end
