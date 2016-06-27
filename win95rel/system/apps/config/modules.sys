@@ -1,0 +1,99 @@
+function edit_user()
+
+	write("Editing user: ")
+	term.setTextColor(colors.lightGray)
+	write(login[number_edit])
+	term.setTextColor(colors.black)
+	
+	if permission[number_edit] == "guest" then
+		img = paintutils.loadImage("system/apps/config/images/guest.png")
+	elseif permission[number_edit] == "user" then
+		img = paintutils.loadImage("system/apps/config/images/user.png")
+	elseif permission[number_edit] == "admin" then
+		img = paintutils.loadImage("system/apps/config/images/admin.png")
+	end
+	paintutils.drawImage(img, control_x + 17, control_y + 5)
+	term.setBackgroundColor(colors.white)
+	
+	term.setCursorPos(control_x + 2, control_y + 3)
+	write("Type user: ")
+	term.setTextColor(colors.lightGray)
+	write(permission[number_edit])
+	term.setTextColor(colors.black)
+	
+	term.setCursorPos(control_x + 2, control_y + 5)
+	term.setBackgroundColor(colors.orange)
+	write("edit password")
+	
+	term.setCursorPos(control_x + 2, control_y + 7)
+	term.setBackgroundColor(colors.yellow)
+	write(" change type ")
+	
+	term.setCursorPos(control_x + 2, control_y + 9)
+	term.setBackgroundColor(colors.red)
+	write(" remove user ")
+	
+	term.setCursorPos(control_x + 3, control_y + 15)
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.red)
+	write("return to User list")
+	term.setTextColor(colors.black)
+end
+
+function write_users()
+	s = fs.open("system/config/users.config", "w")
+	s.writeLine(its(default))
+	for i = 1 , user_count do
+		s.writeLine("{")
+		s.writeLine(login[i])
+		s.writeLine(password[i])
+		s.writeLine(user_path[i])
+		s.writeLine(permission[i])
+		s.writeLine("}")
+	end
+	s.close()
+end
+
+function reWrite_userList()
+	s = fs.open("/system/config/users.config", "w")
+	s.writeLine(its(default))
+	for i = 1, user_count do
+		if not(login[i] == nil) then
+			s.writeLine("{")
+			s.writeLine(login[i])
+			s.writeLine(password[i])
+			s.writeLine(user_path[i])
+			s.writeLine(permission[i])
+			s.writeLine("}")
+		end
+	end
+	s.close()
+end
+
+function edit_password()
+	create_window(11, 5, "change password", "write new password", "", "", "", "info")
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	pass = read("*")
+	create_window(11, 5, "change password", "confirm password", "", "", "", "info")
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	if pass == read("*") then
+		password[number_edit] = pass
+		write_users()
+		create_window(11, 5, "change password", "password changed!", "", "", "", "done", nil)
+		sleep(2)
+	else
+		create_window(11, 5, "change password", "not confirmed!", "", "", "", "error", nil)
+		sleep(2)
+	end
+end
+
+function change_type()
+	create_window(11, 4, "select type", "select new type user " .. login[number_edit], "admin", "user", "guest", "select", 3)
+	config_page = 6
+end
+
+function no_perm()
+	create_window(11, 5, "Error", "You don't have", "permission!!!", "", "", "error", nil)
+end
