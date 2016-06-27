@@ -1,0 +1,15 @@
+if Dj and (empty_slot < Dj_number) and not (Dj_number == 1) then
+	Dj_number = Dj_number - 1
+end
+if Paint and (empty_slot < paint_number) and not (paint_number == 1) then
+	paint_number = paint_number - 1
+end
+if fm and (empty_slot < fm_number) and not (fm_number == 1) then
+	fm_number = fm_number - 1
+end
+if config and (empty_slot < config_number) and not (config_number == 1) then
+	config_number = config_number - 1
+end
+if shop and (empty_slot < shop_number) and not (shop_number == 1) then
+	shop_number = shop_number - 1
+end
