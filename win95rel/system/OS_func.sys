@@ -1,0 +1,135 @@
+function reboot()
+	if fs.exists("win") then
+		shell.run("win")
+	else
+		shell.run("startup")
+	end
+end
+
+function desktop()
+	k = 0
+	i = 1
+	open_program = false
+	term.setCursorPos(1, 1)
+	if fs.exists (fs.combine("users", fs.combine(user_path[default], "bg.png"))) then
+		term.setBackgroundColor(colors.black) -- print user background
+		for i = 1, 18 do
+			paintutils.drawLine(1, i, 51, i, colors.black)
+		end
+		img = paintutils.loadImage(fs.combine("users", fs.combine(user_path[default], "bg.png")))
+		paintutils.drawImage(img, 1, 1)
+	else
+		img = paintutils.loadImage("system/images/bg.png")
+		paintutils.drawImage(img, 1, 1)
+	end
+
+	while k < 4 do --desktop icons
+		while i < 11 do
+			shell.run("system/config/icons.sys")
+			i = i + 1
+		end
+		i = 1
+		k = k + 1
+	end
+	if update_hub then -- hub
+		paintutils.drawLine(1, 19, 53, 19, colors.blue)
+		paintutils.drawLine(1, 19, 7, 19, colors.green)
+		term.setCursorPos(2, 19)
+		term.setTextColor(colors.white)
+		write("start")
+		for i = 1, 10 do
+			shell.run("system/apps/modules/hub_update.sys")
+		end
+		update_hub = false
+	end
+end
+
+function reset_settings()
+	if fs.exists("system/settings.config") then
+		fs.delete("settings.config")
+	end
+	local f = fs.open(fs.combine("users", fs.combine(user_path[default], "settings.config")), "w")
+	f.writeLine("--file: (s1y2s3t4e5m6)")
+	f.writeLine("--type: (settings)")
+	f.writeLine("inv: true")
+	f.writeLine("rom: false")
+	f.writeLine("system: false")
+	f.writeLine("type: true")
+	f.close()
+end
+
+function read_config_OS()
+	icons_array = {}
+	if fs.exists(fs.combine("users", fs.combine(user_path[default], "settings.config"))) then
+		local f = fs.open(fs.combine("users", fs.combine(user_path[default], "settings.config")), "r")
+		local line = f.readLine()
+		if line == "--file: (s1y2s3t4e5m6)" then
+			--????????? ????????? ??????
+			line = f.readLine()
+			if line == "--type: (settings)" then
+				--????????? ????? ???????? ??
+				for i = 1, 4 do
+					line = f.readLine()
+					if line == "inv: true" then
+						invicible = true
+					elseif line == "inv: false" then
+						invicible = false
+					elseif line == "rom: true" then
+						rom_folder = true
+					elseif line == "rom: false" then
+						rom_folder = false
+					elseif line == "system: true" then
+						system_folder = true
+					elseif line == "system: false" then
+						system_folder = false
+					elseif line == "type: true" then
+						extensions = true
+					elseif line == "type: false" then
+						extensions = false
+					else
+						print("The configuration file cannot be read! Reset OS options")
+						sleep(3)
+						reset_settings()
+						if fs.exists("win") then
+							shell.run("win")
+						else
+							shell.run("startup")
+						end
+					end
+				end
+				for i = 1, 40 do
+					line = f.readLine()
+					icons_array[i] = line
+					if line == nil then
+						break
+					end
+				end
+			end
+		end
+	else
+		term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.white)
+		term.clear()
+		term.setCursorPos(1, 1)
+		print("The configuration file cannot be read! Reset OS options")
+		sleep(3)
+		reset_settings()
+		if fs.exists("win") then
+			shell.run("win")
+		else
+			shell.run("startup")
+		end
+	end
+end
+
+function click_icon(id)
+	for k = 0, 3 do
+		for i = 1, 10 do
+			if icons_array[i + 10 * k] == id then
+				if (y > 4 * k + 1) and (y < 4 * k + 5) and (x > 5 * i - 4) and (x < 5 * i) and (open_program == false) then
+					return true
+				end
+			end
+		end
+	end
+end
