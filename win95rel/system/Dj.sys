@@ -1,0 +1,100 @@
+function Dj_print() -- ??????????? ??????????
+  open_program = true
+  Dj = true
+  local img = paintutils.loadImage("system/images/Dj_back.png")
+  paintutils.drawImage(img, 1, 1)
+  term.setBackgroundColor(colors.green)
+  term.setTextColor(colors.black)
+  term.setCursorPos(50, 1)
+  write("_")
+  term.setBackgroundColor(colors.red)
+  write("X")
+  term.setCursorPos(24, 6)
+  term.setBackgroundColor(colors.green)
+  write("Play")
+  term.setCursorPos(24, 10)
+  term.setBackgroundColor(colors.red)
+  write("Stop")
+  term.setCursorPos(5, 1)
+  term.setBackgroundColor(colors.blue)
+  term.setTextColor(colors.white)
+  write("Dj stand V 1.0 beta")
+end
+
+function Dj_buttons() -- ????? ??????? ???????? ??????? ?????? ? ??????
+  if (y == 6 or y == 7) and Dj and Dj_collapse == false and x >= 23 and x <= 28 then -- ?????? Play
+	start_window = false
+	term.setCursorPos(15, 17)
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.gray)
+	Dj_start()
+	write("       ")
+  elseif (y == 9 or y == 10) and Dj and Dj_collapse == false and x >= 23 and x <= 28  then -- ?????? Stop
+	start_window = false
+	term.setCursorPos(15, 17)
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.gray)
+	write("       stopped                 ")
+	shell.run("dj stop")
+  elseif x == 51 and y == 1 and Dj == true and Dj_collapse == false then -- ??????? (X)
+	start_window = false
+	Dj = false
+	shell.run("dj stop")
+	hub_array[Dj_number] = 0
+	hub_move(Dj_number)
+	hub_number = hub_number - 1
+	desktop()
+  elseif y == 1 and x == 50 and Dj and Dj_collapse == false then -- ????????(_)
+	start_window = false
+	Dj_collapse = true
+	desktop()
+  elseif y == 19 and Dj and Dj_collapse == true then -- ??????????
+    local test = 1
+	while test < 10 do
+	  if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 1) then
+		Dj_print()
+		Dj_collapse = false
+		test = 9
+      end
+	  test = test + 1
+	end
+  elseif y == 19 and Dj and Dj_collapse == false then
+	local test = 1
+	while test < 10 do
+	  if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 1) then
+		start_window = false
+		Dj_collapse = true
+		desktop()
+		test = 9
+	  end
+	  test = test + 1
+	end
+  end
+end
+
+function Dj_start() 
+	if peripheral.isPresent("left") and peripheral.getType("left") == "drive" and disk.hasAudio("left") then
+		write(disk.getAudioTitle("left"))
+		disk.playAudio("left")
+	elseif peripheral.isPresent("front") and peripheral.getType("font") == "drive" and disk.hasAudio("front") then
+		write(disk.getAudioTitle("front"))
+		disk.playAudio("front")
+	elseif peripheral.isPresent("right") and peripheral.getType("right") == "drive" and disk.hasAudio("right") then
+		write(disk.getAudioTitle("right"))
+		disk.playAudio("right")
+	elseif peripheral.isPresent("back") and peripheral.getType("back") == "drive" and disk.hasAudio("back") then
+		write(disk.getAudioTitle("back"))
+		disk.playAudio("back")
+	elseif peripheral.isPresent("top") and peripheral.getType("top") == "drive" and disk.hasAudio("top") then
+		write(disk.getAudioTitle("top"))
+		disk.playAudio("top")
+	elseif peripheral.isPresent("bottom") and peripheral.getType("bottom") == "drive" and disk.hasAudio("bottom") then
+		write(disk.getAudioTitle("bottom"))
+		disk.playAudio("bottom")
+	else
+		term.setCursorPos(15, 17)
+		term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.gray)
+		write("       no disk or player       ")
+	end
+end
