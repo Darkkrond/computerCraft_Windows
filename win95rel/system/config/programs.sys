@@ -1,0 +1,20 @@
+if Paint and Paint_collapse == false then
+	shell.run("system/paint.sys")
+	print_GUI()
+end
+if Dj and Dj_collapse == false then
+	shell.run("system/Dj.sys")
+	Dj_print()
+end
+if fm and fm_collapse == false then
+	shell.run("system/file_manager.sys")
+	fm_print()
+end
+if config and config_collapse == false then
+	shell.run("system/config.sys")
+	config_print()
+end
+if shop and shop_collapse == false then
+	shell.run("system/apps/shop/start")
+	shop_print_GUI()
+end
