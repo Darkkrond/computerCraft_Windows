@@ -1,0 +1,255 @@
+function str_to_int(str)
+	if str > 1 and str < 11 then
+		return str - 1
+	elseif str == 11 then
+		return 0
+	elseif (str > 70 and str < 74) then
+		return str - 64
+	elseif (str > 74 and str < 78) then
+		return str - 71
+	elseif (str > 78 and str < 82) then
+		return str - 78
+	elseif str == 82 then
+		return 0
+	else
+		return keys.getName(str)
+	end
+end
+
+function sti(str)
+	if str == "1" then return 1
+	elseif str == "2" then return 2
+	elseif str == "3" then return 3
+	elseif str == "4" then return 4
+	elseif str == "5" then return 5
+	elseif str == "6" then return 6
+	elseif str == "7" then return 7
+	elseif str == "8" then return 8
+	elseif str == "9" then return 9
+	elseif str == "10" then return 10
+	end
+end
+
+function its(str)
+	if str == 1 then return "1"
+	elseif str == 2 then return "2"
+	elseif str == 3 then return "3"
+	elseif str == 4 then return "4"
+	elseif str == 5 then return "5"
+	elseif str == 6 then return "6"
+	elseif str == 7 then return "7"
+	elseif str == 8 then return "8"
+	elseif str == 9 then return "9"
+	elseif str == 10 then return "10"
+	end
+end
+
+local x_aut = 13
+local y_aut = 5
+local i = 1
+local a = 0
+local str = ""
+local menu = false
+local write_pass = true
+local number_sym = 0
+local pass = ""
+local cursor = true
+local img = paintutils.loadImage("system/images/info_window.png")
+
+if fs.exists("system/config/users.config") then
+	s = fs.open("system/config/users.config", "r")
+	local existsFile = s.readLine()
+	if existsFile == nil then
+		term.setBackgroundColor(colors.blue)
+		term.setTextColor(colors.white)
+		term.clear()
+		term.setCursorPos(x_aut + 2, y_aut + 2)
+		write(" Users not found!!!")
+		term.setCursorPos(x_aut + 2, y_aut + 3)
+		write("Reinstall Windows!!!")
+		term.setCursorPos(x_aut, y_aut + 4)
+		write("Press any key to return to DOS")
+		cycle = false
+	else
+	
+	default = sti(existsFile)
+	while cycle do
+		if s.readLine() == "{" then
+			a = a + 1
+			for i = 1, 5 do
+				str = s.readLine()
+				if i == 1 then
+					login[a] = str
+				elseif i == 2 then
+					password[a] = str
+				elseif i == 3 then
+					user_path[a] = str
+				elseif i == 4 then
+					permission[a] = str
+				end
+				
+			end
+		else
+			cycle = false
+		end
+	end
+	user_count = a
+	term.setBackgroundColor(colors.lightGray)
+	term.clear()
+	sleep(1)
+	cycle = true
+	paintutils.drawImage(img, x_aut, y_aut)
+	term.setCursorPos(x_aut + 7, y_aut)
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	write("Authorization")
+	
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	
+	term.setCursorPos(x_aut + 2, y_aut + 2)
+	write(login[default])
+	term.setCursorPos(x_aut + 20, y_aut + 2)
+	write("\\/")
+	term.setCursorPos(x_aut + 2, y_aut + 4)
+	write("password")
+	paintutils.drawLine(x_aut + 2, y_aut + 5, x_aut + 21, y_aut + 5, colors.lightGray)
+	term.setBackgroundColor(colors.lightGray)
+	term.setTextColor(colors.black)
+	term.setCursorPos(x_aut + 2 + number_sym, y_aut + 5)
+	local timer = os.startTimer(0.5)
+	write("_")
+	term.setBackgroundColor(colors.white)
+	while cycle do
+		local event, button, x, y = os.pullEvent()
+		if event == "mouse_click" then
+			if ((x > x_aut + 1) and (x < x_aut + 22)) and (y == y_aut + 2) and menu == false then
+				term.setCursorPos(x_aut + 2, y_aut + 2)
+				write(login[default])
+				term.setCursorPos(x_aut + 20, y_aut + 2)
+				write("/\\")
+				for i = 1, a do
+					paintutils.drawLine(x_aut + 2, y_aut + 2 + i, x_aut + 21, y_aut + 2 + i, colors.lightBlue)
+					term.setCursorPos(x_aut + 2, y_aut + 2 + i)
+					write(login[i])
+				end
+				menu = true
+			elseif ((x > x_aut + 1) and (x < x_aut + 22)) and (y == y_aut + 2) and menu == true then
+				term.setBackgroundColor(colors.white)
+				term.setCursorPos(x_aut + 2, y_aut + 2)
+				write(login[default])
+				term.setCursorPos(x_aut + 20, y_aut + 2)
+				write("\\/")
+				for i = 1, a do
+					paintutils.drawLine(x_aut + 2, y_aut + 2 + i, x_aut + 21, y_aut + 2 + i, colors.white)
+				end
+				term.setCursorPos(x_aut + 2, y_aut + 4)
+				write("password")
+				pass = ""
+				number_sym = 0
+				paintutils.drawLine(x_aut + 2, y_aut + 5, x_aut + 21, y_aut + 5, colors.lightGray)
+				menu = false
+			elseif x > x_aut + 1 and x < x_aut + 22 and y > 2 + y_aut and y < a + 3 + y_aut and menu == true then
+				default = y - y_aut - 2
+				term.setBackgroundColor(colors.white)
+				term.setCursorPos(x_aut + 2, y_aut + 2)
+				write(login[default])
+				write("          ")
+				term.setCursorPos(x_aut + 20, y_aut + 2)
+				write("\\/")
+				for i = 1, a do
+					paintutils.drawLine(x_aut + 2, y_aut + 2 + i, x_aut + 21, y_aut + 2 + i, colors.white)
+				end
+				term.setCursorPos(x_aut + 2, y_aut + 4)
+				write("password")
+				paintutils.drawLine(x_aut + 2, y_aut + 5, x_aut + 21, y_aut + 5, colors.lightGray)
+				pass = ""
+				number_sym = 0
+				paintutils.drawLine(x_aut + 2, y_aut + 5, x_aut + 21, y_aut + 5, colors.lightGray)
+				menu = false
+			elseif (x > x_aut + 2) and (x < x_aut + 22) and (y == y_aut + 5) then
+				write_pass = true
+			elseif (x < x_aut + 3) or (x > x_aut + 21) or not (y == 5) then
+				write_pass = false
+				term.setBackgroundColor(colors.lightGray)
+				term.setTextColor(colors.black)
+				term.setCursorPos(x_aut + 2 + number_sym, y_aut + 5)
+				write(" ")
+			end
+		elseif event == "key" and write_pass then
+			if not (button == 219) and not (button == 28) and not (button == 14)and not (button == 29)and not (button == 42)and not (button == 157)and not (button == 54) then
+				term.setBackgroundColor(colors.lightGray)
+				term.setTextColor(colors.black)
+				term.setCursorPos(x_aut + 2 + number_sym, y_aut + 5)
+				write("*")
+				pass = pass .. str_to_int(button)
+				number_sym = number_sym + 1
+				term.setBackgroundColor(colors.lightGray)
+				term.setTextColor(colors.black)
+				term.setCursorPos(x_aut + 2 + number_sym, y_aut + 5)
+				write("_")
+			elseif button == 28 then
+				term.setCursorPos(x_aut + 2, y_aut + 6)
+				if pass == password[default] then
+					s = fs.open("system/config/users.config", "w")
+					s.writeLine(its(default))
+					for i = 1 , a do
+						s.writeLine("{")
+						s.writeLine(login[i])
+						s.writeLine(password[i])
+						s.writeLine(user_path[i])
+						s.writeLine(permission[i])
+						s.writeLine("}")
+					end
+					s.close()
+					term.setBackgroundColor(colors.lightGray)
+					term.clear()
+					sleep(1)
+					read_config_OS()
+					update_hub = true
+					start_window = false
+					desktop()
+					break
+				else
+					term.setBackgroundColor(colors.white)
+					term.setTextColor(colors.black)
+					term.setCursorPos(x_aut + 5, y_aut + 6)
+					write("wrong password!")
+					pass = ""
+					number_sym = 0
+					paintutils.drawLine(x_aut + 2, y_aut + 5, x_aut + 21, y_aut + 5, colors.lightGray)
+				end
+			end
+		elseif event == "timer" and write_pass then
+			term.setBackgroundColor(colors.lightGray)
+			term.setTextColor(colors.black)
+			term.setCursorPos(x_aut + 2 + number_sym, y_aut + 5)
+			cursor = not cursor
+			if cursor then
+				write("_")
+			else
+				write(" ")
+			end
+			term.setBackgroundColor(colors.white)
+			term.setTextColor(colors.black)
+			term.setCursorPos(x_aut + 5, y_aut + 6)
+			write("               ")
+			local timer = os.startTimer(0.5)
+		end
+	end
+	cycle = true
+	end
+else
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	term.clear()
+	term.setCursorPos(x_aut + 2, y_aut + 2)
+	write("unable to read user list")
+	term.setCursorPos(x_aut + 2, y_aut + 3)
+	write("Please reinstall Windows")
+	sleep(5)
+	cycle = false
+	term.setBackgroundColor(colors.black)
+	term.clear()
+	term.setCursorPos(1, 1)
+end
