@@ -1,0 +1,23 @@
+function github(url_app)
+	write("Connecting to github.com... ")
+	http.request("https://raw.githubusercontent.com/" .. url_app)
+	while true do
+		local event = os.pullEvent()
+		if event == "http_failure" then
+			github_error()
+			break
+		elseif event == "http_success" then
+			github_done()
+			break
+		end
+	end
+end
+
+function github_error()
+	term.setTextColor(colors.red)
+	write("ERROR")
+end
+
+function github_done()
+	write("done")
+end
