@@ -1,0 +1,30 @@
+shell.run("system/Dj.sys")
+Dj_buttons()
+
+shell.run("system/file_manager.sys")
+fm_buttons()
+if fm_menu and fm and fm_collapse == false and (x > fm_menu_x - 1) and (x < fm_menu_x + 12) then
+	if y == fm_menu_y then
+		fm_menu = false
+		fm_print()
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("Edit file")
+		fm_sel_file = nil
+	elseif y == fm_menu_y + 1 then
+		fm_menu = false
+		fm_open_program(fm_sel_file)
+		fm_sel_file = nil
+	end
+end
+
+shell.run("system/paint.sys")
+paint_buttons()
+
+shell.run("system/config.sys")
+config_button()
+
+shell.run("system/apps/shop/start")
+shop_buttons()
+
