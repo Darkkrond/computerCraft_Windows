@@ -1,0 +1,291 @@
+function shop_print_GUI()
+	http.request("https://raw.githubusercontent.com/Darkkrond/computerCraft_Windows/master/App_Shop/Applist")
+	create_fullWindow(colors.gray, colors.white, colors.white, "App Shop V 1.0 ALPHA", "_X")
+	term.setCursorPos(14, 10)
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.red)
+	write("Loading applications...")
+end
+
+function shop_start()
+	if not (fs.exists("/users/" .. login[default] .. "/balance.config")) then
+		local s = fs.open("/users/" .. login[default] .. "/balance.config", "w")
+		s.writeLine("250")
+		s.close()
+	end
+
+	if not (fs.exists("/users/" .. login[default] .. "/shop.config")) then
+		local s = fs.open("/users/" .. login[default] .. "/shop.config", "w")
+		s.close()
+	end
+	shell.run("/system/apps/modules/windows_API.sys")
+	open_program = true
+	app_page = 1
+	app_number = 1
+	shop_app_list = {}
+	local s = fs.open("/users/" .. login[default] .. "/balance.config", "r")
+	money = tonumber(s.readLine())
+	s.close()
+	shell.run("/users/" .. login[default] .. "/shop.config")
+	shop_print_GUI()
+end
+
+function shop_buttons()
+	if shop and not (shop_collapse) then
+		if x == 51 and y == 1 then
+			open_program = false
+			shop = false
+			shop_buy = false
+			shop_github = false
+			hub_array[shop_number] = 0
+			hub_move(shop_number)
+			hub_number = hub_number - 1
+			shop_number = 0
+			clear_start()
+		elseif x == 50 and y == 1 then
+			open_program = false
+			shop_collapse = true
+			clear_start()
+		elseif app_number > 4 and app_number < 8 and y == 18 then
+			if x == 24 then
+				app_page = 1
+				shop_load_apps()
+			elseif x == 26 then
+				app_page = 2
+				shop_load_apps()
+			end
+		elseif app_number > 8 and app_number < 12 and y == 18 then
+			if x == 23 then
+				app_page = 1
+				shop_load_apps()
+			elseif x == 25 then
+				app_page = 2
+				shop_load_apps()
+			elseif x == 27 then
+				app_page = 3
+				shop_load_apps()
+			end
+		elseif x > 45 and x < 51 and y > 2 and y < 6 and shop_app_list[(app_page * 4) - 3] == true then
+			term.setTextColor(colors.lightBlue)
+			term.setBackgroundColor(colors.white)
+			term.setCursorPos(6, 5)
+			if app_site[(app_page * 4) - 3] == "pastebin" then
+				shell.run("pastebin run " .. app_get[(app_page * 4) - 3])
+			elseif app_site[(app_page * 4) - 3] == "github" then
+				shell.run("/system/apps/shop/download.sys")
+				github(app_get[(app_page * 4) - 3])
+			end
+			sleep(1)
+			shop_print_GUI()
+		elseif x > 45 and x < 51 and y > 2 and y < 6 and not (shop_app_list[(app_page * 4) - 3] == true) then
+			create_window(12, 5, "buy application", "Buy " .. app_name[(app_page * 4) - 3] .. "?", "", "", "", "info", p1)
+			term.setTextColor(colors.black)
+			term.setBackgroundColor(colors.green)
+			term.setCursorPos(15, 12)
+			write(" Yes ")
+			term.setBackgroundColor(colors.red)
+			term.setCursorPos(31, 12)
+			write(" NO ")
+			term.setBackgroundColor(colors.white)
+			shop_buy = true
+			shop_buy_number = (app_page * 4) - 3
+		elseif x > 45 and x < 51 and y > 6 and y < 10 and shop_app_list[(app_page * 4) - 2] == true then
+			term.setTextColor(colors.lightBlue)
+			term.setBackgroundColor(colors.white)
+			term.setCursorPos(6, 9)
+			if app_site[(app_page * 4) - 2] == "pastebin" then
+				shell.run("pastebin run " .. app_get[(app_page * 4) - 2])
+			elseif app_site[(app_page * 4) - 2] == "github" then
+				shell.run("/system/apps/shop/download.sys")
+				github(app_get[(app_page * 4) - 2])
+			end
+			sleep(1)
+			shop_print_GUI()
+		elseif x > 45 and x < 51 and y > 6 and y < 10 and not (shop_app_list[(app_page * 4) - 2] == true) then
+			create_window(12, 5, "buy application", "Buy " .. app_name[(app_page * 4) - 2] .. "?", "", "", "", "info", p1)
+			term.setTextColor(colors.black)
+			term.setBackgroundColor(colors.green)
+			term.setCursorPos(15, 12)
+			write(" Yes ")
+			term.setBackgroundColor(colors.red)
+			term.setCursorPos(31, 12)
+			write(" NO ")
+			term.setBackgroundColor(colors.white)
+			shop_buy = true
+			shop_buy_number = (app_page * 4) - 2
+		elseif x > 45 and x < 51 and y > 10 and y < 14 and shop_app_list[(app_page * 4) - 1] == true then
+			term.setTextColor(colors.lightBlue)
+			term.setBackgroundColor(colors.white)
+			term.setCursorPos(6, 13)
+			if app_site[(app_page * 4) - 1] == "pastebin" then
+				shell.run("pastebin run " .. app_get[(app_page * 4) - 1])
+			elseif app_site[(app_page * 4) - 1] == "github" then
+				shell.run("/system/apps/shop/download.sys")
+				github(app_get[(app_page * 4) - 1])
+			end
+			sleep(1)
+			shop_print_GUI()
+		elseif x > 45 and x < 51 and y > 10 and y < 14 and not (shop_app_list[(app_page * 4) - 1] == true) then
+			create_window(12, 5, "buy application", "Buy " .. app_name[(app_page * 4) - 1] .. "?", "", "", "", "info", p1)
+			term.setTextColor(colors.black)
+			term.setBackgroundColor(colors.green)
+			term.setCursorPos(15, 12)
+			write(" Yes ")
+			term.setBackgroundColor(colors.red)
+			term.setCursorPos(31, 12)
+			write(" NO ")
+			term.setBackgroundColor(colors.white)
+			shop_buy = true
+			shop_buy_number = (app_page * 4) - 1
+		elseif shop_buy and x > 14 and x < 20 and y == 12 and tonumber(app_price[shop_buy_number]) <= money then
+			shop_buy_app(shop_buy_number)
+		elseif shop_buy and x > 30 and x < 35 and y == 12 then
+			shop_buy = false
+			shop_print_GUI()
+		elseif shop_buy and x > 14 and x < 20 and y == 12 and tonumber(app_price[shop_buy_number]) > money then
+			create_window(12, 5, "buy application", "", "not enough money", "", "", "error", nil)
+			sleep(2)
+			shop_buy = false
+			shop_print_GUI()
+		end
+	end
+	if shop and y == 19 and shop_collapse then
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 8) then
+				clear_start()
+				open_program = true
+				shop_collapse = false
+				shop_print_GUI()
+				test = 9
+			end
+			test = test + 1
+		end
+	elseif shop and y == 19 and shop_collapse == false then
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 8) then
+				open_program = false
+				shop_collapse = true
+				clear_start()
+				test = 9
+			end
+			test = test + 1
+		end
+	end
+end
+
+function shop_error()
+	term.setCursorPos(5, 10)
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.red)
+	write("ERROR: list of applications don't readed!")
+end
+
+function shop_load_apps()
+	create_fullWindow(colors.gray, colors.white, colors.white, "App Shop V 1.0 ALPHA", "_X")
+	app_name = {}
+	local app_icon_1 = {}
+	local app_icon_2 = {}
+	local app_icon_3 = {}
+	local app_perm = {}
+	app_site = {}
+	app_number = 1
+	app_get = {}
+	app_price = {}
+	--local f = fs.open("/apps.txt", "r")
+	local f = http.get("https://raw.githubusercontent.com/Darkkrond/computerCraft_Windows/master/App_Shop/Applist")
+	if f.readLine() == "--App Shop" then
+		f.readLine()
+		while true do
+			app_name[app_number] = f.readLine()
+			app_icon_1[app_number] = f.readLine()
+			app_icon_2[app_number] = f.readLine()
+			app_icon_3[app_number] = f.readLine()
+			app_perm[app_number] = f.readLine()
+			app_site[app_number] = f.readLine()
+			app_get[app_number] = f.readLine()
+			app_price[app_number] = f.readLine()
+			f.readLine()
+			if not (f.readLine() == "{") then
+				break
+			end
+			app_number = app_number + 1
+		end
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(30, 2)
+		write("Balance: " .. money .. "P")
+		for i = 1, 4 do
+			if app_name[i + (4 * app_page) - 4] == nil then
+				break
+			end
+			local s = fs.open("/system/apps/shop/icon_program.png", "w")
+			s.writeLine(app_icon_1[i + (4 * app_page) - 4])
+			s.writeLine(app_icon_2[i + (4 * app_page) - 4])
+			s.writeLine(app_icon_3[i + (4 * app_page) - 4])
+			s.close()
+			img = paintutils.loadImage("/system/apps/shop/icon_program.png")
+			paintutils.drawImage(img, 2, (4 * i) - 1)
+
+			if shop_app_list[i + (4 * app_page) - 4] == true then
+				img = paintutils.loadImage("/system/apps/shop/images/done.png")
+			else
+				img = paintutils.loadImage("/system/apps/shop/images/buy.png")
+			end
+			paintutils.drawImage(img, 46, (4 * i) - 1)
+			term.setBackgroundColor(colors.white)
+			term.setCursorPos(6, (4 * i) - 1)
+			write(app_name[i + (4 * app_page) - 4])
+			term.setCursorPos(6, (4 * i))
+			term.setTextColor(colors.lightGray)
+			write("Price: ")
+			if tonumber(app_price[i + (4 * app_page) - 4]) <= money then
+				term.setTextColor(colors.green)
+			else
+				term.setTextColor(colors.red)
+			end
+			write(app_price[i + (4 * app_page) - 4])
+			term.setCursorPos(6, (4 * i) + 1)
+			term.setTextColor(colors.lightBlue)
+			write(app_site[i + (4 * app_page) - 4])
+			term.setTextColor(colors.black)
+			term.setCursorPos(1, (4 * i) + 2)
+			write("---------------------------------------------------")
+		end
+		if app_number > 4 then
+			term.setBackgroundColor(colors.lightGray)
+			if app_number < 8 then
+				term.setCursorPos(24, 18)
+				write(" ")
+				term.setCursorPos(26, 18)
+				write(" ")
+			elseif app_number > 8 and app_number < 12 then
+				term.setCursorPos(23, 18)
+				write(" ")
+				term.setCursorPos(25, 18)
+				write(" ")
+				term.setCursorPos(27, 18)
+				write(" ")
+			end
+			term.setBackgroundColor(colors.black)
+		end
+	else
+		shop_error()
+	end
+	f.close()
+end
+
+function shop_buy_app(number)
+	shop_buy = false
+	local s = fs.open("/users/" .. login[default] .. "/shop.config" , "a")
+	s.writeLine("shop_app_list[" .. number .. "] = true")
+	s.close()
+	money = money - app_price[number]
+	shell.run("/users/" .. login[default] .. "/shop.config")
+	local s = fs.open("/users/" .. login[default] .. "/balance.config" , "w")
+	s.writeLine(money)
+	s.close()
+
+	shop_print_GUI()
+end
