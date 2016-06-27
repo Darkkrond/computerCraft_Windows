@@ -1,0 +1,486 @@
+function config_print()
+	shell.run("/system/apps/modules/windows_API.sys")
+	shell.run("system/apps/config/modules.sys")
+	open_program = true
+	local img = paintutils.loadImage("system/images/opt_back.png")
+	paintutils.drawImage(img, control_x, control_y)
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	term.setCursorPos(control_x + 1, control_y)
+	write("Control Panel")
+	term.setTextColor(colors.black)
+	term.setBackgroundColor(colors.green)
+	term.setCursorPos(control_x + 28, control_y)
+	write("_")
+	term.setBackgroundColor(colors.yellow)
+	write("o")
+	term.setBackgroundColor(colors.red)
+	write("X")
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	term.setCursorPos(control_x + 2, control_y + 2)
+	if config_page == 0 then
+		term.setCursorPos(control_x + 1, control_y + 2)
+		term.setTextColor(colors.green)
+		write("select settings from the menu")
+		term.setTextColor(colors.black)
+		term.setCursorPos(control_x + 3, control_y + 4)
+		write("File Manager")
+		term.setCursorPos(control_x + 3, control_y + 6)
+		write("Users")
+		term.setCursorPos(control_x + 3, control_y + 8)
+		write("System Information")
+	elseif config_page == 4 then --edit user
+		edit_user()
+	elseif config_page == 3 then --system info
+		write("Windows version:")
+		term.setCursorPos(control_x + 3, control_y + 3)
+		term.setTextColor(colors.lightGray)
+		write(win_version)
+		term.setTextColor(colors.black)
+		
+		term.setCursorPos(control_x + 2, control_y + 4)
+		write("File manager version:")
+		term.setCursorPos(control_x + 3, control_y + 5)
+		term.setTextColor(colors.lightGray)
+		write(fm_version)
+		term.setTextColor(colors.black)
+		
+		term.setCursorPos(control_x + 2, control_y + 6)
+		write("Paint version:")
+		term.setCursorPos(control_x + 3, control_y + 7)
+		term.setTextColor(colors.lightGray)
+		write(paint_version)
+		term.setTextColor(colors.black)
+		
+		term.setCursorPos(control_x + 2, control_y + 8)
+		write("Dj version:")
+		term.setCursorPos(control_x + 3, control_y + 9)
+		term.setTextColor(colors.lightGray)
+		write(Dj_version)
+		term.setTextColor(colors.black)
+		
+		term.setCursorPos(control_x + 2, control_y + 13)
+		write("Developer: ")
+		term.setTextColor(colors.lightGray)
+		write(author)
+		term.setTextColor(colors.black)
+		term.setCursorPos(control_x + 2, control_y + 14)
+		write("Nick on server: ")
+		term.setTextColor(colors.lightGray)
+		write(author_nick)
+		term.setCursorPos(control_x + 3, control_y + 15)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.red)
+		write("return to Main Page")
+		term.setTextColor(colors.black)
+	elseif config_page == 1 then --file manager settings
+		write("Press switch to change state")
+		term.setCursorPos(control_x + 3, control_y + 4)
+		write("visibility main files")
+		if invicible == false then
+			paintutils.drawPixel(control_x + 26, control_y + 4 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 4 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 4 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 4 ,colors.red)
+		end
+		term.setCursorPos(control_x + 3, control_y + 6)
+		term.setBackgroundColor(colors.white)
+		write("visibility 'rom'")
+		if rom_folder == false then
+			paintutils.drawPixel(control_x + 26, control_y + 6 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 6 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 6 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 6 ,colors.red)
+		end
+		term.setCursorPos(control_x + 3, control_y + 8)
+		term.setBackgroundColor(colors.white)
+		write("visibility 'system'")
+		if system_folder == false then
+			paintutils.drawPixel(control_x + 26, control_y + 8 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 8 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 8 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 8 ,colors.red)
+		end
+		term.setCursorPos(control_x + 3, control_y + 10)
+		term.setBackgroundColor(colors.white)
+		write("show extensions")
+		if extensions == false then
+			paintutils.drawPixel(control_x + 26, control_y + 10 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 10 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 10 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 10 ,colors.red)
+		end
+		term.setCursorPos(control_x + 3, control_y + 12)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.red)
+		write("return to Main Page")
+		term.setTextColor(colors.black)
+	elseif config_page == 2 then --users settings
+		write("configuring users")
+		term.setBackgroundColor(colors.yellow)
+		term.setCursorPos(control_x + 20, control_y + 2)
+		write(" New user ")
+		
+		term.setBackgroundColor(colors.white)
+		term.setCursorPos(control_x + 3, control_y + 4)
+		write("the current user")
+		term.setCursorPos(control_x + 3, control_y + 5)
+		term.setTextColor(colors.lightGray)
+		write(login[default])
+		term.setTextColor(colors.black)
+		i = 1
+		term.setCursorPos(control_x + 3, control_y + 6)
+		term.setTextColor(colors.red)
+		write("All Users:")
+		term.setTextColor(colors.green)
+		while not ((login[i] == nil) or (i == 6)) do
+			term.setCursorPos(control_x + 3, control_y + 6 + i)
+			write(login[i])
+			i = i + 1
+		end
+		term.setTextColor(colors.black)
+		
+		term.setCursorPos(control_x + 3, control_y + 15)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.red)
+		write("return to Main Page")
+		term.setTextColor(colors.black)
+	else
+		shell.run("system/config/settings-win.sys")
+	end
+end
+
+function config_button()
+	if x == control_x + 30 and y == control_y and config and config_collapse == false then
+		config_page = 0
+		open_program = false
+		start_window = false
+		config = false
+		config_write(invicible, rom_folder, system_folder, extensions)
+		hub_array[config_number] = 0
+		hub_move(config_number)
+		hub_number = hub_number - 1
+		config_number = 0
+		desktop()
+	elseif x == control_x + 28 and y == control_y and config and config_collapse == false then
+		open_program = false
+		start_window = false
+		config_collapse = true
+		desktop()
+	elseif y == 19 and config and config_collapse then
+		open_program = true
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 4) then
+				config_print()
+				config_collapse = false
+				test = 9
+			end
+			test = test + 1
+		end
+	elseif y == 19 and config and config_collapse == false then
+		open_program = false
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 4) then
+				open_program = false
+				start_window = false
+				config_collapse = true
+				desktop()
+				test = 9
+			end
+			test = test + 1
+		end
+	elseif config_page == 0 and (x > control_x + 2) and (x < control_x + 15) and (y == control_y + 4) and config and config_collapse == false then
+		config_page = 1
+		config_print()
+	elseif config_page == 0 and (x > control_x + 2) and (x < control_x + 15) and (y == control_y + 6) and config and config_collapse == false then
+		config_page = 2
+		loading_user()
+		config_print()
+	elseif config_page == 0 and (x > control_x + 2) and (x < control_x + 21) and (y == control_y + 8) and config and config_collapse == false then
+		config_page = 3
+		config_print()
+	elseif config_page == 2 and (x > control_x + 2) and (x < control_x + 20) and (y < control_y + 15) and config and config_collapse == false then
+		number_edit = y - (control_y + 6)
+		if not (login[number_edit] == nil) then
+			config_page = 4
+			config_print()
+		end
+	elseif config_page == 1 and (x > control_x + 2) and (x < control_x + 22) and y == control_y + 12 and config and config_collapse == false then
+		config_page = 0
+		config_print()
+		config_write(invicible, rom_folder, system_folder, extensions)
+	elseif config_page == 1 and (x == control_x + 26 or x == control_x + 27) and y == control_y + 4 and config and config_collapse == false then
+		invicible = not invicible
+		if invicible == false then
+			paintutils.drawPixel(control_x + 26, control_y + 4 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 4 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 4 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 4 ,colors.red)
+		end
+	elseif config_page == 1 and (x == control_x + 26 or x == control_x + 27) and y == control_y + 6 and config and config_collapse == false then
+		rom_folder = not rom_folder
+		if rom_folder == false then
+			paintutils.drawPixel(control_x + 26, control_y + 6 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 6 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 6 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 6 ,colors.red)
+		end
+	elseif config_page == 1 and (x == control_x + 26 or x == control_x + 27) and y == control_y + 8 and config and config_collapse == false then
+		system_folder = not system_folder
+		if system_folder == false then
+			paintutils.drawPixel(control_x + 26, control_y + 8 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 8 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 8 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 8 ,colors.red)
+		end
+	elseif config_page == 1 and (x == control_x + 26 or x == control_x + 27) and y == control_y + 10 and config and config_collapse == false then
+		extensions = not extensions
+		if extensions == false then
+			paintutils.drawPixel(control_x + 26, control_y + 10 ,colors.green)
+			paintutils.drawPixel(control_x + 27, control_y + 10 ,colors.gray)
+		else
+			paintutils.drawPixel(control_x + 26, control_y + 10 ,colors.gray)
+			paintutils.drawPixel(control_x + 27, control_y + 10 ,colors.red)
+		end
+	elseif (config_page == 2 or config_page == 3) and (x > control_x + 2) and (x < control_x + 22) and y == control_y + 15 and config and config_collapse == false then
+		config_page = 0
+		config_print()
+	elseif config_page == 2 and (x > control_x + 19) and (x < control_x + 30) and y == control_y + 2 and config and config_collapse == false then
+		img = paintutils.loadImage("/system/images/info_window.png")
+		paintutils.drawImage(img, 11, 4)
+		term.setCursorPos(13, 4)
+		term.setBackgroundColor(colors.blue)
+		term.setTextColor(colors.white)
+		write("Create new User")
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		
+		if permission[default] == "admin" then
+			term.setCursorPos(12, 6)
+			write("Enter the Name")
+			term.setCursorPos(12, 7)
+			name_user = read()
+			term.setCursorPos(12, 6)
+			write("Enter the Password (if need)")
+			term.setCursorPos(12, 7)
+			write("                    ")
+			term.setCursorPos(12, 7)
+			pass = read()
+			if (pass == "") then
+				term.setCursorPos(12, 6)
+				write("Select permission   ")
+				term.setCursorPos(12, 7)
+				write("                    ")
+				term.setCursorPos(12, 8)
+				term.setBackgroundColor(colors.red)
+				write("Admin")
+				term.setCursorPos(22, 8)
+				term.setBackgroundColor(colors.yellow)
+				write("User")
+				term.setCursorPos(31, 8)
+				term.setBackgroundColor(colors.green)
+				write("Guest")
+				term.setCursorPos(23, 10)
+				term.setBackgroundColor(colors.blue)
+				write(" Done ")
+				config_page = 5
+				term.setBackgroundColor(colors.white)
+			else
+				term.setCursorPos(12, 6)
+				write("Confirm the Password        ")
+				term.setCursorPos(12, 7)
+				write("                    ")
+				term.setCursorPos(12, 7)
+				if not (read() == pass) then
+					term.setCursorPos(12, 8)
+					write("Password is not confirmed")
+					term.setCursorPos(12, 9)
+					write("User is not created")
+					sleep(1)
+					loading_user()
+					config_print()
+				else
+					term.setCursorPos(12, 6)
+					write("Select permission   ")
+					term.setCursorPos(12, 7)
+					write("                    ")
+					term.setCursorPos(12, 8)
+					term.setBackgroundColor(colors.red)
+					write("Admin")
+					term.setCursorPos(22, 8)
+					term.setBackgroundColor(colors.yellow)
+					write("User")
+					term.setCursorPos(31, 8)
+					term.setBackgroundColor(colors.green)
+					write("Guest")
+					term.setCursorPos(23, 10)
+					term.setBackgroundColor(colors.blue)
+					write(" Done ")
+					config_page = 5
+					term.setBackgroundColor(colors.white)
+				end
+			end
+		else
+			no_perm()
+			sleep(2)
+			config_print()
+		end
+	elseif (config_page == 5 or config_page == 6) and x > 11 and x < 17 and y == 8 and config and config_collapse == false then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(12, 10)
+		write("Admin")
+		perm = "admin"
+	elseif (config_page == 5 or config_page == 6) and x > 21 and x < 26 and y == 8 and config and config_collapse == false then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(12, 10)
+		write("User ")
+		perm = "user"
+	elseif (config_page == 5 or config_page == 6) and x > 30 and x < 36 and y == 8 and config and config_collapse == false then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(12, 10)
+		write("Guest")
+		perm = "guest"
+	elseif config_page == 5 and x > 22 and x < 29 and y == 10 and config and config_collapse == false then
+		config_page = 2
+		add_user()
+		loading_user()
+		config_print()
+	elseif config_page == 4 and x > control_x + 1 and x < control_x + 15 and y == control_y + 5 and config and config_collapse == false then
+		if permission[default] == "admin" then
+			term.setCursorPos(control_x + 2, control_y + 13)
+			term.setTextColor(colors.black)
+			edit_password()
+			config_print()
+		else
+			no_perm()
+			sleep(2)
+			config_print()
+		end
+	elseif config_page == 4 and x > control_x + 1 and x < control_x + 15 and y == control_y + 7 and config and config_collapse == false then
+		if permission[default] == "admin" then
+			term.setCursorPos(control_x + 2, control_y + 13)
+			change_type()
+		else
+			no_perm()
+			sleep(2)
+			config_print()
+		end
+	elseif config_page == 4 and x > control_x + 1 and x < control_x + 15 and y == control_y + 9 and config and config_collapse == false then
+		if permission[default] == "admin" then
+			if not (permission[number_edit] == "admin") then
+				user_count = user_count - 1
+				login[number_edit] = nil
+				reWrite_userList()
+				config_page = 2
+				loading_user()
+				config_print()
+			else
+				create_window(11, 5, "Error", "Can't remove", "admin account", "", "", "error", nil)
+				sleep(2)
+				config_print()
+			end
+		else
+			no_perm()
+			sleep(2)
+			config_print()
+		end
+	elseif config_page == 4 and (x > control_x + 2) and (x < control_x + 22) and y == control_y + 15 and config and config_collapse == false then
+		config_page = 2
+		config_print()
+	elseif config_page == 6 and x > 22 and x < 29 and y == 10 and config and config_collapse == false then
+		config_page = 4
+		permission[number_edit] = perm
+		write_users()
+		config_print()
+	end
+end
+
+
+function add_user()
+	local s = fs.open("system/config/users.config", "a")
+	s.writeLine("{")
+	s.writeLine(name_user)
+	s.writeLine(pass)
+	s.writeLine(name_user)
+	s.writeLine(perm)
+	s.writeLine("}")
+	s.close()
+	loading_user()
+	config_print()
+	user_count = user_count + 1
+end
+
+function config_write(inv, rom, system, type)
+	local s = fs.open(fs.combine("users", fs.combine(user_path[default], "settings.config")), "w")
+	s.writeLine("--file: (s1y2s3t4e5m6)")
+	s.writeLine("--type: (settings)")
+	if inv then
+		s.writeLine("inv: true")
+	else
+		s.writeLine("inv: false")
+	end
+	if rom then
+		s.writeLine("rom: true")
+	else
+		s.writeLine("rom: false")
+	end
+	if system then
+		s.writeLine("system: true")
+	else
+		s.writeLine("system: false")
+	end
+	if type then
+		s.writeLine("type: true")
+	else
+		s.writeLine("type: false")
+	end
+	i = 1
+	while not (icons_array[i] == nil) do
+		s.writeLine(icons_array[i])
+		i = i + 1
+	end
+	s.close()
+	config_print()
+end
+
+function loading_user()
+	local i = 1
+	local a = 0
+	local str = ""
+	s = fs.open("system/config/users.config", "r")
+	s.readLine()
+	while cycle do
+		if s.readLine() == "{" then
+			a = a + 1
+			for i = 1, 5 do
+				str = s.readLine()
+				if i == 1 then
+					login[a] = str
+				elseif i == 2 then
+					password[a] = str
+				elseif i == 3 then
+					user_path[a] = str
+				elseif i == 4 then
+					permission[a] = str
+				end
+				
+			end
+		else
+			cycle = false
+		end
+	end
+	cycle = true
+end
