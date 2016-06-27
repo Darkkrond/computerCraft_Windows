@@ -1,0 +1,268 @@
+--version: (Windows 95 release)
+function clear_start()
+	start_window = false
+	if open_program == false or moveble_program == true then
+		moveble_program = false
+		shell.run("system/OS_func.sys")
+		desktop()
+	end
+	shell.run("system/config/programs.sys")
+end
+
+function hub_move(empty_slot)
+  empty = false
+  shell.run("system/config/open_prog.sys")
+  update_hub = true
+  while empty_slot < 10 or empty == true do
+	if hub_array[empty_slot + 1] == nil then
+		empty = true
+	end
+    hub_array[empty_slot] = hub_array[empty_slot + 1]
+    empty_slot = empty_slot + 1
+  end
+end
+local auth = true
+shell.run("system/apps/modules/windows_API.sys")
+shell.run("system/vars.sys")
+
+shell.run("system/OS_func.sys")
+shell.run("system/apps/modules/loading.sys")
+loading()
+win = true
+
+
+--main cycle
+while cycle do
+  if not (computerId == os.getComputerID()) then
+    local compid = true
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    create_window(11, 5, "Windows crashed!!!", "Computer Id", "not confirmed", "Please, reinstall", "Windows!", "error", nil)
+    term.setBackgroundColor(colors.black)
+    term.setTextColor(colors.white)
+    term.setCursorPos(1, 13)
+    break
+  end
+  if auth then
+	    if shell.run("system/apps/modules/autorization.sys") then
+	  	auth = false
+	  else
+		  term.setBackgroundColor(colors.black)
+		  term.clear()
+		  create_window(11, 5, "Windows crashed!!!", "You press", "CTRL + T", "", "", "error", nil)
+		  term.setBackgroundColor(colors.black)
+		  term.setTextColor(colors.white)
+		  term.setCursorPos(1, 13)
+		  break
+	  end
+  end
+  event, button, x, y = os.pullEvent()
+  if event == "mouse_up" then -- ???????????? ?????????????????? ????????????
+    if y == 19 and x < 8 then
+	--draw start window
+      if start_window == false then
+	    start_window = true
+        start_pic = paintutils.loadImage("system/images/start.png")
+        paintutils.drawImage(start_pic, 1, 10)
+        term.setTextColor(colors.black)
+        paintutils.drawPixel(14, 16, colors.red)
+        term.setCursorPos(14, 16)
+        write("E")
+        paintutils.drawPixel(14, 15, colors.orange)
+        term.setCursorPos(14, 15)
+        write("R")
+		paintutils.drawPixel(14, 17, colors.green)
+        term.setCursorPos(14, 17)
+        write("U")
+
+        term.setCursorPos(1, 10)
+        term.setBackgroundColor(colors.white)
+        term.setTextColor(colors.lightGray)
+        print("  Windows 95")
+        term.setTextColor(colors.black)
+        print(" File Manager")
+        print(" CMD")
+        print(" CraftOS")
+        print(" start with PC")
+        print(" paint")
+        print(" App Shop")
+        print(" DJ control")
+		if not (permission[default] == "guest") then
+			print(" Control Panel")
+		end
+      else
+	    clear_start()
+      end
+    end
+    if start_window == true then
+	    --logout
+	    if y == 17 and x == 14 then
+		  auth = true
+	    end
+      if y == 16 and x < 10 then
+        clear_start()
+        open_program = true
+        shop = true
+        hub_number = hub_number + 1
+        term.setCursorPos(4 * hub_number + 4, 19)
+        term.setBackgroundColor(colors.lightGray)
+        term.setTextColor(colors.yellow)
+        write("shop")
+        shop_number = hub_number
+        hub_array[shop_number] = 8
+        shell.run("system/apps/shop/start")
+        shop_start()
+      end
+	    --start CraftOS
+      if y == 13 and x < 9 then
+        cycle = false
+		    win = false
+        paintutils.drawPixel(1, 1, colors.black)
+        term.clear()
+        term.setCursorPos(1, 1)
+        shell.run("shell")
+      end
+	  --power off
+      if y == 16 and x == 14 then
+        cycle = false
+        paintutils.drawPixel(1, 1, colors.black)
+        term.clear()
+        term.setCursorPos(15, 10)
+        term.setTextColor(colors.white)
+        print("disabling OS...")
+      	sleep(1.5)
+      	term.setCursorPos(15, 11)
+      	print("shutdown PC...")
+      	sleep(2.5)
+       cycle = false
+        os.shutdown()
+      end
+	  --reboot
+   	  if y == 15 and x == 14 then
+        cycle = false
+        paintutils.drawPixel(1, 1, colors.black)
+        term.clear()
+        term.setCursorPos(15, 10)
+        term.setTextColor(colors.white)
+        print("disabling OS...")
+      	sleep(1.5)
+      	term.setCursorPos(15, 11)
+      	print("Reboot PC...")
+      	sleep(1.5)
+        cycle = false
+      	reboot()
+      end
+	  --start CMD
+   	  if y == 12 and x < 9 then
+	  start_window = false
+        term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.white)
+        shell.run("system/CMD.exe")
+		update_hub = true
+		desktop()
+      end
+	  --Paint
+  	  if y == 15 and x < 9 and Paint == false then
+		x = 0
+		y = 0
+		color = colors.black
+		color_right = colors.white
+		start_window = false
+		hub_number = hub_number + 1
+		hub_array[hub_number] = 2
+		paint_number = hub_number
+		term.setCursorPos(4 * hub_number + 4, 19)
+		term.setBackgroundColor(colors.yellow)
+		term.setTextColor(colors.red)
+		write("Draw")
+		shell.run("system/paint.sys")
+		mod = 4
+		print_GUI()
+      end
+	  --setup os as main
+  	  if y == 14 and x < 15 then
+       clear_start()
+       shell.run("system/startWithPC.sys")
+       if startWithPC() then
+     	  shell.run("rename win startup")
+     	  sleep(2)
+       end
+       desktop()
+      end
+      --DJ control
+      if y == 17 and x < 10 and Dj == false then
+  	    start_window = false
+
+        hub_number = hub_number + 1
+        term.setCursorPos(4 * hub_number + 4, 19)
+        term.setBackgroundColor(colors.white)
+        term.setTextColor(colors.black)
+        write(" Dj ")
+	    Dj_number = hub_number
+        hub_array[Dj_number] = 1
+
+	    shell.run("system/Dj.sys")
+	    Dj_print()
+      end
+	  -- file manager
+	  if y == 11 and x < 14 and fm == false then
+		x = 51
+		y = 19
+		hub_number = hub_number + 1
+        term.setCursorPos(4 * hub_number + 4, 19)
+        term.setBackgroundColor(colors.orange)
+        term.setTextColor(colors.green)
+        write(" Fm ")
+		fm_number = hub_number
+		hub_array[fm_number] = 3
+		path = "/"
+		
+		shell.run("system/file_manager.sys")
+		fm_print()
+	  end
+	  -- control panel
+	  if y == 18 and x < 15 and config == false and not (permission[default] == "guest") then
+		hub_number = hub_number + 1
+        term.setCursorPos(4 * hub_number + 4, 19)
+        term.setBackgroundColor(colors.magenta)
+        term.setTextColor(colors.yellow)
+        write(" CP ")
+		config_number = hub_number
+		hub_array[config_number] = 4
+		config = true
+		clear_start()
+	    shell.run("system/config.sys")
+		config_print()
+	  end
+    end
+
+    shell.run("system/config/event_click.sys")
+  end
+  
+  if event == "mouse_drag" then -- ???????????? ?????????????????? ????????????????????????
+    if config and config_collapse == false then
+		if x < 22 and y < 4 then
+			moveble_program = true
+			control_x = x
+			control_y = y
+			sleep(0.1)
+			clear_start()
+			shell.run("system/config.sys")
+			config_print()
+		end
+	end
+	shell.run("system/config/event_move.sys")
+  end
+  if event == "key" then
+	shell.run("system/config/event_key.sys")
+  end
+  shell.run("system/config/events.sys")
+end
+if auth == false and compid == false then
+	term.setBackgroundColor(colors.black)
+	term.clear()
+	create_window(11, 5, "Windows crashed!!!", "The reason", "is not known", "", "", "error", nil)
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.white)
+	term.setCursorPos(1, 13)
+end
