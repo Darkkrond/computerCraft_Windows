@@ -1,0 +1,38 @@
+function startWithPC()
+  img = paintutils.loadImage("system/images/info_window.png")
+  paintutils.drawImage(img, 12, 5)
+  term.setCursorPos(13, 5)
+  term.setBackgroundColor(colors.blue)
+  term.setTextColor(colors.white)
+  write("Start OS with PC")
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  term.setCursorPos(13, 8)
+  write("If you have, when OS")
+  term.setCursorPos(13, 9)
+  write("starting with PC - ")
+  term.setCursorPos(13, 10)
+  write("press <COPY>")
+  paintutils.drawLine(14, 12, 20, 12, colors.yellow)
+  term.setCursorPos(16, 12)
+  write("COPY")
+  paintutils.drawPixel(30, 12, colors.red)
+  term.setCursorPos(30, 12)
+  write("X")
+  while true do
+    local event, button, x, y = os.pullEvent("mouse_click")
+    if y == 12 then
+	  if x < 22 then
+      if x > 13 then
+        term.setBackgroundColor(colors.white)
+        write("  done!")
+        return true
+      end
+	  end
+
+	  if x == 30 then
+        return false
+      end
+	end
+  end
+end
