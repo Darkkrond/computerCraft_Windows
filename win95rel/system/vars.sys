@@ -1,0 +1,81 @@
+open_program = false
+moveble_program = false
+cycle = true
+start_window = false
+hub_number = 0
+hub_array = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+empty_slot = 0
+update_hub = true
+
+--system info
+author = "Darkkrond Presents"
+author_nick = "mnsbabydoll"
+win_version = "Windows 95 release"
+fm_version = "F/M V 1.0 BETA"
+paint_version = "Paint V 1.0 ALPHA"
+Dj_version = "Dj stand V 1.0"
+
+--authorization
+login = {}
+password = {}
+user_path = {}
+permission = {}
+default = ""
+user_count = 0
+
+icons_array = {}
+
+Dj = false
+Dj_collapse = false
+Dj_number = 0
+
+fm = false
+fm_collapse = false
+fm_number = 0
+fm_page = 1
+sel = false
+key_exists = false
+fm_copy = {}
+fm_copy_path = ""
+fm_mod = 0
+fm_num_sel = 0
+fm_menu = false
+fm_menu_x = 0
+fm_menu_y = 0
+
+Paint = false
+Paint_collapse = false
+paint_number = 0
+paint_filename = "unnamed.png"
+paint_pixels = {}
+paint_menu = false
+paint_editing = false
+
+config = false
+config_collapse = false
+control_x = 11
+control_y = 3
+config_number = 0
+config_page = 0
+--users vars
+
+--saper
+saper = false
+saper_collapse = false
+saper_x = 10
+saper_y = 2
+saper_number = 0
+
+--enternet explorer
+ent_exp = false
+ent_exp_collapse = false
+ent_exp_number = 0
+ent_exp_config = 3
+
+--App Shop
+shop = false
+shop_collapse = false
+shop_number = 0
+shop_app_list = {}
+shop_buy = false
+
