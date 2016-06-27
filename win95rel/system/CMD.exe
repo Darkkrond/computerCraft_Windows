@@ -1,0 +1,129 @@
+function cl()
+term.clear()
+term.setCursorPos(1, 1)
+end
+
+sost = true
+while sost do
+cl()
+print("cmd for CraftOS-WIN95")
+sleep(0.5)
+print("ALPHA TEST!")
+write("C:/system > ")
+st = read()
+if st == "dir" then
+shell.run("dir")
+elseif st == "exit" then
+sost = false
+print("Consoll exiting...")
+sleep(0.4)
+elseif st == "clear" then
+shell.run("clear")
+elseif st == "time" then
+shell.run("time")
+elseif st == "id" then
+shell.run("id")
+elseif st == "shutdown" then
+shell.run("shutdown")
+elseif st == "redstone" then
+write("Enter side ?> ")
+redstone1 = read()
+write("Enter true/false ?> ")
+redstone2 = read()
+shell.run("redstone set", redstone1, redstone2)
+elseif st == "help" then
+print("Command: 1. dir /2. exit /3. clear /4. time")
+print("5. id /6. shutdown /7. edit /8. makedir /9.copy ")
+print("10. delete /11. rename /12. disk /13. music /14. redootos")
+print("15. calc /16. move /17. redstone /18. reboot")
+print("Enter number programm for read help.")
+sost1 = true
+while sost1 do
+nh = read()
+write("Number programm ?> ")
+if nh == "exit" then
+sost1 = false
+cl()
+elseif nh == "1" then
+print("Print files and directory in it's folder.")
+elseif nh == "2" then
+ptint("Exit from CMD.")
+elseif nh == "3" then
+print("Clear consoll from text.")
+elseif nh == "4" then
+print("Print time in Minecraft.")
+elseif nh == "5" then
+print("Id computer in full world Minecraft.")
+elseif nh == "6" then 
+ptint("Shotdown you'r PC.")
+elseif nh == "7" then
+print("Editing file. Enter edit next name file.")
+elseif nh == "8" then
+print("Creat folder. Enter nakedir and nane folder.")
+elseif nh == "9" then
+print("Copying files. Enter one files and two files.")
+elseif nh == "10" then 
+print("Deleted files. Enter name deleted file.")
+elseif nh == "11" then
+ptint("Get new name for file. Enter last name and new name.")
+elseif nh == "12" then
+print("Go to folder on disk.")
+elseif nh == "13" then
+print("Play disk in CD-ROM.")
+elseif nh == "14" then
+print("Reboot OS not reboot full PC.")
+elseif nh == "15" then
+print("Start calculator.")
+elseif nh == "16" then
+print("Moveing enter files and deleting last file.")
+elseif nh == "17" then
+print("Enter 'redstone' next side next mode.")
+elseif nh == "18" then
+print("It's command reboot full PC.")
+end
+end
+elseif st == "edit" then
+write("Enter name file--> ")
+edit1 = read()
+shell.run("edit", edit1)
+elseif st == "makedir" then
+write("Name folder ?> ")
+mkd1 = read()
+shell.run("mkdir", mkd1)
+elseif st == "copy" then
+write("File 1 ?> ")
+copy1 = read()
+write("File 2 ?> ")
+copy2 = read()
+shell.run("copy", copy1, copy2)
+elseif st == "delete" then
+write("Deleted file ?> ")
+dl =read()
+shell.run("delete", dl)
+elseif st == "rename" then
+write("Last name ?> ")
+nm1 = read()
+write("New name ?> ")
+nm2 = read()
+shell.run("rename", nm1, nm2)
+elseif st == "disk" then
+shell.run("cd /disk")
+elseif st == "music" then
+shell.run("dj")
+elseif st == "redootos" then
+print("Rebooting OS...")
+sleep(0.5)
+elseif st == "calc" then
+shell.run("calc")
+elseif st == "move" then
+write("Enter last files ?> ")
+mv1 = read()
+write("Enter new files ?> ")
+mv2 = read()
+shell.run("move", mv1, mv2)
+elseif st == "reboot" then
+shell.run("reboot")
+elseif st == "luatest" then
+shell.run("LuaInt") 
+end
+end
