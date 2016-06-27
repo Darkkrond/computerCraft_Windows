@@ -1,0 +1,12 @@
+if event == "http_failure" and ent_exp then
+	error_404()
+elseif event == "http_success" and ent_exp then
+	load_page(url)
+end
+
+if event == "http_failure" and shop then
+	shop_error()
+elseif event == "http_success" and shop then
+	shop_load_apps()
+end
+
