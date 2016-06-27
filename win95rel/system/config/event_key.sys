@@ -1,0 +1,42 @@
+if keys.getName(button) == "enter" and fm and fm_collapse == false and sel then
+	sel = false
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	term.setCursorPos(13, 18)
+	if fm_mod == 1 then
+		print("            Files Copied               ")
+	elseif fm_mod == 2 then
+		print("            Files Cutted               ")
+	elseif fm_mod == 3 then
+		for i = 1, fm_num_sel do
+			fs.delete(fs.combine(path, fm_copy[i]))
+		end
+		print("            Files Removed              ")
+		fm_print()
+	elseif fm_mod == 4 then
+		print("         Image setup as main!          ")
+		setup = true
+	end
+end
+
+if fm and fm_collapse == false and key_exists then
+	if keys.getName(button) == "enter" then
+		fs.delete(fs.combine(path, fm_copy[i]))
+		fs.copy(fs.combine(fm_copy_path, fm_copy[i]), fs.combine(path, fm_copy[i]))
+		key_exists = false
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("                Pasted                 ")
+		if fm_mod == 2 then
+			fs.delete(fs.combine(fm_copy_path, fm_copy[i]))
+		end
+	elseif keys.getName(button) == "esc" then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("              Not Pasted               ")
+		key_exists = false
+	end
+end
+
