@@ -1,0 +1,494 @@
+function fm_print()
+	open_program = true
+	start_window = false
+	fm = true
+	local img = paintutils.loadImage("system/images/fm_back.png")
+	paintutils.drawImage(img, 1, 1)
+	term.setCursorPos(5, 1)
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	write("File manager V 1.0")
+
+	term.setCursorPos(50, 1)
+	term.setBackgroundColor(colors.green)
+	term.setTextColor(colors.black)
+	write("_")
+	term.setBackgroundColor(colors.red)
+	write("X")
+	term.setCursorPos(13, 2)
+	term.setBackgroundColor(colors.cyan)
+	term.setTextColor(colors.black)
+	write("File")
+	term.setCursorPos(18, 2)
+	term.setBackgroundColor(colors.orange)
+	term.setTextColor(colors.black)
+	write("reload")
+	term.setCursorPos(25, 2)
+	term.setBackgroundColor(colors.green)
+	write("cut")
+	term.setCursorPos(29, 2)
+	term.setBackgroundColor(colors.yellow)
+	write("copy")
+	term.setCursorPos(34, 2)
+	term.setBackgroundColor(colors.red)
+	write("paste")
+	term.setCursorPos(40, 2)
+	term.setBackgroundColor(colors.brown)
+	write("mkdir")
+	term.setCursorPos(46, 2)
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.white)
+	write("<-")
+	term.setCursorPos(49, 2)
+	term.setBackgroundColor(colors.lightGray)
+	term.setTextColor(colors.black)
+	write("del")
+	fm_loadFiles(path)
+end
+
+name_folder = ""
+name_file = ""
+
+function fm_open_program(fm_sel_file)
+	s = fs.open(fs.combine(path, fm_sel_file), "r")
+	local mode = s.readLine()
+	if mode == "--gui" then
+		fm_collapse = true
+		shell.run(fs.combine(path, fm_sel_file))
+	else
+		term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.white)
+		term.clear()
+		term.setCursorPos(1, 1)
+		shell.run(fs.combine(path, fm_sel_file))
+		term.setBackgroundColor(colors.black)
+		term.setTextColor(colors.green)
+		term.setCursorPos(1, 19)
+		write("Press any key to back in File Manager")
+		key_press = false
+		while key_press == false do
+			event, button, x, y = os.pullEvent()
+			if event == "key" then
+				if key_press == false then
+					key_press = true
+				end
+			end
+		end
+		x = 0
+		y = 0
+		update_hub = true
+		desktop()
+	fm_print()
+	end
+	s.close()
+end
+function fm_buttons()
+	if x == 51 and y == 1 and fm and fm_collapse == false then -- close
+		open_program = false
+		start_window = false
+		fm = false
+		sel = false
+		key_exists = false
+		hub_array[fm_number] = 0
+		hub_move(fm_number)
+		hub_number = hub_number - 1
+		fm_number = 0
+		clear_start()
+	elseif x == 50 and y == 1 and fm and fm_collapse == false then -- collapse
+		open_program = false
+		start_window = false
+		fm_collapse = true
+		clear_start()
+	elseif y == 19 and fm and fm_collapse then -- uncollapse
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 3) then
+				clear_start()
+				open_program = true
+				fm_collapse = false
+				fm_print()
+				test = 9
+			end
+			test = test + 1
+		end
+	elseif y == 19 and fm and fm_collapse == false and x > 7 then -- collapse
+		start_window = false
+		local test = 1
+		while test < 10 do
+			if ((4 * test + 3) < x and (4 * test + 8) > x and hub_array[test] == 3) then
+				open_program = false
+				fm_collapse = true
+				clear_start()
+				test = 9
+			end
+			test = test + 1
+		end
+	elseif y == 2 and x > 18 and x < 24 and fm and fm_collapse == false then -- reload list of files
+		term.setBackgroundColor(colors.white)
+		shell.run("system/OS_func.sys")
+		read_config_OS()
+		fm_print()
+		sel = false
+		fm_num_sel = 0
+		fm_copy = {}
+	elseif y == 2 and x > 48 and fm and fm_collapse == false and not sel then --delete
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("Select files or path's and press Enter")
+		sel = true
+		fm_mod = 3
+	elseif y == 2 and x > 28 and x < 33 and fm and fm_collapse == false and not sel then -- copy
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("Select files or path's and press Enter")
+		fm_copy_path = path
+		sel = true
+		fm_mod = 1
+	elseif y == 2 and x > 24 and x < 28 and fm and fm_collapse == fase and not sel then --cut
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(13, 18)
+		print("Select files or path's and press Enter")
+		fm_copy_path = path
+		sel = true
+		fm_mod = 2
+	elseif y > 2 and y < 18 and x < 12 and fm and fm_collapse == false and sel then -- select
+		fm_num_sel = fm_num_sel + 1
+		term.setBackgroundColor(colors.lime)
+		term.setCursorPos(1, y)
+		fm_socrash(filesList[y - 2])
+		fm_copy[fm_num_sel] = filesList[y - 2]
+	elseif y == 2 and x > 33 and x < 39 and fm and fm_collapse == false then --paste
+		for i = 1, fm_num_sel do
+			if fs.exists(fs.combine(path, fm_copy[i])) then
+				term.setBackgroundColor(colors.white)
+				term.setTextColor(colors.black)
+				term.setCursorPos(13, 18)
+				print("file exists in this dir. enter - replace  ")
+				key_exists = true
+			else
+				key_exists = false
+				term.setBackgroundColor(colors.white)
+				term.setTextColor(colors.black)
+				fs.copy(fs.combine(fm_copy_path, fm_copy[i]), fs.combine(path, fm_copy[i]))
+				fm_print()
+				fm_num_sel = 0
+				fm_copy = {}
+			end
+			if key_exists then
+				i = i - 1
+			end
+		end
+	elseif fm and fm_collapse == false and start_window == false then
+		local var = 1
+		while var < 16 do
+			if filesList[y - 2] == nil then else
+				if x < 12 and y > 2 and y < 18 then
+					if fs.isDir(fs.combine(path, filesList[y - 2])) then
+						--folders
+						path = fs.combine(path, filesList[y - 2])
+						x = 0
+						y = 0
+						fm_print()
+					else
+						if fm_get_format(filesList[y - 2], 1) == "sys" then
+							--system file
+							term.setBackgroundColor(colors.white)
+							term.setTextColor(colors.black)
+							term.setCursorPos(13, 18)
+							print("System file cannot be edited and read  ")
+						elseif fm_get_format(filesList[y - 2], 1) == "exe" and button == 1 and fm_menu == false then
+							--program
+							fm_open_program(filesList[y - 2])
+						elseif fm_get_format(filesList[y - 2], 1) == "exe" and button == 2 and fm_menu == false then
+							menu_str = {}
+							menu_str[1] = "edit"
+							menu_str[2] = "open"
+							menu_str[3] = "open with:"
+							menu_str[4] = "set icon"
+							menu_str[5] = "---"
+							menu_str[6] = "info"
+							fm_menu_x = x
+							fm_menu_y = y
+							fm_sel_file = filesList[y - 2]
+							create_menu(x, y, colors.lightGray, colors.black)
+							fm_menu = true
+							x = 0
+							y = 0
+						elseif fm_get_format(filesList[y - 2], 1) == "exe" and button == 2 and fm_menu == true then
+							x = 0
+							y = 0
+							fm_sel_file = nil
+							fm_menu = false
+							fm_print()
+						elseif fm_get_format(filesList[y - 2], 2) == "win" or fm_get_format(filesList[y - 2], 2) == "startup" then
+							--main file OS
+							term.setBackgroundColor(colors.white)
+							term.setTextColor(colors.black)
+							term.setCursorPos(13, 18)
+							print("Main class OS can't be edited or readed")
+						elseif fm_get_format(filesList[y - 2], 1) == "png" then
+							--pictures
+							if button == 1 then
+								term.setBackgroundColor(colors.white)
+								term.setTextColor(colors.black)
+								term.setCursorPos(13, 18)
+								print("It\'s versin OS can\'t open pictures   ")
+							elseif button == 2 then
+								term.setBackgroundColor(colors.white)
+								term.setTextColor(colors.black)
+								term.setCursorPos(13, 18)
+								print("Press Enter when setup as main this img")
+								fm_mod = 4
+								sel = true
+								if setup then
+									if fs.exists(fs.combine("users", fs.combine(user_path[default], "bg.png"))) then
+										fs.delete(fs.combine("users", fs.combine(user_path[default], "bg.png")))
+									end
+									fs.copy(fs.combine(path, filesList[y - 2]), fs.combine("users", fs.combine(user_path[default], "bg.png")))
+									setup = false
+								end
+							end
+						else
+							term.setBackgroundColor(colors.white)
+							term.setTextColor(colors.black)
+							term.setCursorPos(13, 18)
+							print("File type is not known                 ")
+						end
+					end
+				end
+			end
+
+			if filesList[var + 1] == nil then --?????????? ????????
+				var = 16
+			else
+				var = var + 1
+			end
+		end
+	end
+	if y == 2 and (x == 46 or x == 47) and fm == true and fm_collapse == false then
+		if path == "/" or path == "" then
+			term.setBackgroundColor(colors.white)
+			term.setTextColor(colors.black)
+			term.setCursorPos(13, 18)
+			print("This root directory                    ")
+		else
+			path = fs.getDir(path)
+			x = 51
+			y = 19
+			fm_page = 1
+			fm_print()
+			fm_loadFiles(path)
+		end
+	end
+	if y == 2 and x < 45 and x > 39 and fm == true and fm_collapse == false then
+		img = paintutils.loadImage("system/images/info_window.png")
+		paintutils.drawImage(img, 12, 5)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(12, 6)
+		write("write name folder:")
+		term.setCursorPos(14, 8)
+		local name_folder = read()
+		fs.makeDir(fs.combine(path, name_folder))
+		fm_print()
+	end
+	
+	if y == 18 and x == 2 and fm and fm_collapse == false and start_window == false and not (filesList[16] == nil) then
+		fm_page = 1
+		fm_print()
+	elseif y == 18 and x == 4 and fm and fm_collapse == false and start_window == false and not (filesList[16] == nil) then
+		fm_page = 2
+		fm_print()
+	elseif y == 18 and x == 6 and fm and fm_collapse == false and start_window == false and not (filesList[31] == nil) then
+		fm_page = 3
+		fm_print()
+	end
+	
+	if y == 2 and x > 12 and x < 17 and fm == true and fm_collapse == false then
+		img = paintutils.loadImage("system/images/info_window.png")
+		paintutils.drawImage(img, 12, 5)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(12, 6)
+		write("write name File:")
+		term.setCursorPos(14, 8)
+		local name_file = read()
+		local s = fs.open(fs.combine(path, name_file), "w")
+		s.close()
+		fm_print()
+	end
+end
+
+function fm_loadFiles(path)
+	filesList = fs.list(path) -- ?????? ???? ????? ? ?????? ? ??????
+	if not (filesList[16] == nil) then
+		term.setCursorPos(2, 18)
+		if fm_page == 1 then
+			term.setBackgroundColor(colors.gray)
+		else
+			term.setBackgroundColor(colors.lightGray)
+		end
+		write(" ")
+		term.setCursorPos(4, 18)
+		if fm_page == 2 then
+			term.setBackgroundColor(colors.gray)
+		else
+			term.setBackgroundColor(colors.lightGray)
+		end
+		write(" ")
+		if not (filesList[31] == nil) then
+			term.setCursorPos(6, 18)
+			if fm_page == 3 then
+				term.setBackgroundColor(colors.gray)
+			else
+				term.setBackgroundColor(colors.lightGray)
+			end
+			write(" ")
+		end
+	end
+	local var = 1 -- ????? ??????????????? ???????? ???????
+	term.setCursorPos(1, 3) -- ????????? ?????? ?????? ??????? ?????? ? ?????
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	for var = 1 + ((fm_page - 1) * 15), 15 + ((fm_page - 1) * 15) do
+		if filesList[var] == nil then
+			term.setTextColor(colors.gray)
+			print("null folder")
+			local i = 1
+			for i = 1, 15 do
+				print("           ")
+			end
+			term.setTextColor(colors.black)
+		elseif filesList[var] == "rom" then -- ???????? ?? ???????? ????????? ????? rom
+			if rom_folder then
+				fm_moveFiles(var)
+				var = var - 1
+			else
+				term.setTextColor(colors.blue) -- ????????? ????? ?????? ??? ????? rom
+				print(filesList[var]) -- ????? rom
+				term.setTextColor(colors.black) -- ????????? ????? ?????? ? ?????????????? ????????
+			end
+		elseif filesList[var] == "system" then -- ???????? ?? ????????? ????? ???? ??
+			if system_folder then
+				fm_moveFiles(var)
+				var = var - 1
+			else
+				term.setTextColor(colors.red) -- ????????? ????? ?????? ??? ????? system
+				print(filesList[var]) -- ????? system
+				term.setTextColor(colors.black) -- ????????? ????? ?????? ? ?????????????? ????????
+			end
+		elseif filesList[var] == "startup" then
+			if invicible then
+				fm_moveFiles(var)
+				var = var - 1
+			else
+				print(filesList[var])
+			end
+		elseif filesList[var] == "disk" and fs.isDir(fs.combine(path, filesList[var])) then
+			term.setTextColor(colors.lightGray)
+			print("Floppy disk")
+			term.setTextColor(colors.black)
+		else
+			if fs.isDir(fs.combine(path, filesList[var])) then
+				term.setTextColor(colors.green) -- ????????? ????? ?????? ??? ?????
+				print(filesList[var]) -- ????? ???????? ?????
+				term.setTextColor(colors.black) -- ????????? ????? ?????? ? ?????????????? ????????
+			else
+				if fm_get_format(filesList[var], 1) == "sys" then
+					term.setTextColor(colors.lightGray)
+				end
+				if extensions then
+					fm_socrash(fm_get_format(filesList[var], 2))--print(fm_get_format(filesList[var], 2))
+				else
+					fm_socrash(filesList[var])--print(filesList[var]) -- ???? ???. ?????? ?? ????? - ??????? ???????? ??????????? ??????
+				end
+				term.setTextColor(colors.black)
+			end
+		end
+
+		if filesList[var + 1] == nil then
+			break
+		end
+	end
+end
+
+function fm_moveFiles(num)
+	while num < 16 do
+		filesList[num] = filesList[num + 1]
+		num = num + 1
+	end
+end
+
+function fm_get_format(text, mode)
+	local dlina = string.len(text)
+	local array_text = {}
+	local number_tochka = 0
+	local format = ""
+	for i = 1, dlina do
+		array_text[i] = string.char(string.byte(text, i, i))
+		if array_text[i] == "." then
+			number_tochka = i
+		end
+	end
+	if mode == 1 then
+		for i = number_tochka + 1, dlina do
+			format = format .. array_text[i]
+		end
+		return format
+	elseif mode == 2 then
+		if number_tochka == 0 then
+			for i = 1, dlina do
+				format = format .. array_text[i]
+			end
+		else
+			for i = 1, number_tochka - 1 do
+				format = format .. array_text[i]
+			end
+		end
+		return format
+	end
+end
+
+function fm_socrash(text)
+	local dlina = string.len(text)
+	if dlina > 11 then
+		local array_text = {}
+		for i = 1, dlina do
+			array_text[i] = string.char(string.byte(text, i, i))
+		end
+		
+		dlina = string.len(fm_get_format(text, 2))
+		for i = 1, dlina do
+			array_text[i] = string.char(string.byte(text, i, i))
+		end
+		if not extensions then
+			if dlina > 7 then
+				dlina = 7
+			end
+			
+			for i = 1, dlina do
+				write(array_text[i])
+			end
+			write(".")
+			if fm_get_format(text, 1) == "config" then
+				print("cfg")
+			else
+				print(fm_get_format(text, 1))
+			end
+		else
+			if dlina > 11 then
+				dlina = 11
+			end
+			
+			for i = 1, dlina do
+				write(array_text[i])
+			end
+			print("")
+		end
+	else
+		print(text)
+	end
+end
