@@ -83,7 +83,7 @@ function loading()
 	print("Loaded window")
 	sleep(0.7)
 	shell.run("pastebin run s275xgZH")
-	if ver == "win95_pre-release" then
+	if ver == "win95_release" then
 	elseif ver == nil then
 		print("Failed to check for updates!")
 	else
