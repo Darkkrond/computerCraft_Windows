@@ -1,0 +1,143 @@
+function create_fullWindow(color_title, color_window, color_title_text, title, mode_close)
+	paintutils.drawLine(1, 1, 51, 1, color_title)
+	term.setCursorPos(5, 1)
+	term.setTextColor(color_title_text)
+	write(title)
+	if mode_close == "_X" then
+		term.setBackgroundColor(colors.green)
+		term.setCursorPos(50, 1)
+		term.setTextColor(colors.black)
+		write("_")
+		term.setBackgroundColor(colors.red)
+		write("X")
+	elseif mode_close == "X" then
+		term.setBackgroundColor(colors.red)
+		term.setTextColor(colors.black)
+		term.setCursorPos(51, 1)
+		write("X")
+	end
+	for i = 2, 18 do
+		paintutils.drawLine(1, i, 51, i, color_window)
+	end
+	term.setTextColor(colors.black)
+end
+
+function create_window(win_x, win_y, title, text1, text2, text3, text4, mode, p1)
+	img = paintutils.loadImage("/system/images/info_window.png")
+	paintutils.drawImage(img, win_x, win_y)
+	term.setBackgroundColor(colors.blue)
+	term.setTextColor(colors.white)
+	term.setCursorPos(win_x + 3, win_y)
+	write(title)
+	if mode == "info" then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(win_x + 2, win_y + 2)
+		write(text1)
+		term.setCursorPos(win_x + 2, win_y + 3)
+		write(text2)
+		term.setCursorPos(win_x + 2, win_y + 4)
+		write(text3)
+		term.setCursorPos(win_x + 2, win_y + 6)
+		write(text4)
+	elseif mode == "select" then
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(win_x + 2, win_y + 2)
+		write(text1)
+		if p1 == 3 then
+			term.setCursorPos(win_x + 2, win_y + 4)
+			term.setBackgroundColor(colors.red)
+			write(text2)
+			term.setCursorPos(win_x + 12, win_y + 4)
+			term.setBackgroundColor(colors.yellow)
+			write(text3)
+			term.setCursorPos(win_x + 21, win_y + 4)
+			term.setBackgroundColor(colors.green)
+			write(text4)
+			term.setCursorPos(win_x + 10, win_y + 6)
+			term.setBackgroundColor(colors.blue)
+			write(" Done ")
+		end
+	elseif mode == "error" then
+		img = paintutils.loadImage("/system/images/icons/error.png")
+		paintutils.drawImage(img, win_x + 2, win_y + 2)
+		term.setCursorPos(win_x + 5, win_y + 4)
+		term.setTextColor(colors.red)
+		term.setBackgroundColor(colors.orange)
+		write("!")
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(win_x + 10, win_y + 1)
+		write(text1)
+		term.setCursorPos(win_x + 10, win_y + 2)
+		write(text2)
+		term.setCursorPos(win_x + 10, win_y + 3)
+		write(text3)
+		term.setCursorPos(win_x + 10, win_y + 4)
+		write(text4)
+		term.setCursorPos(win_x + 15, win_y + 6)
+		term.setBackgroundColor(colors.blue)
+		term.setTextColor(colors.white)
+		if not (p1 == nil) then
+			write(" " .. p1 .. " ")
+		end
+	elseif mode == "done" then
+		img = paintutils.loadImage("/system/images/icons/done.png")
+		paintutils.drawImage(img, win_x + 2, win_y + 2)
+		term.setCursorPos(win_x + 5, win_y + 4)
+		term.setBackgroundColor(colors.white)
+		term.setTextColor(colors.black)
+		term.setCursorPos(win_x + 10, win_y + 1)
+		write(text1)
+		term.setCursorPos(win_x + 10, win_y + 2)
+		write(text2)
+		term.setCursorPos(win_x + 10, win_y + 3)
+		write(text3)
+		term.setCursorPos(win_x + 10, win_y + 4)
+		write(text4)
+		term.setCursorPos(win_x + 15, win_y + 6)
+		term.setBackgroundColor(colors.blue)
+		term.setTextColor(colors.white)
+		if not (p1 == nil) then
+			write(" " .. p1 .. " ")
+		end
+	end
+	term.setBackgroundColor(colors.black)
+	term.setTextColor(colors.white)
+end
+
+function create_menu(men_x, men_y, color_bg, color_text)
+	term.setBackgroundColor(color_bg)
+	term.setTextColor(color_text)
+	term.setCursorPos(men_x, men_y)
+	local i = true
+	local count_str = 1
+	while i do
+		if menu_str[count_str] == nil then
+			i = false
+		else
+			count_str = count_str + 1
+		end
+	end
+	count_str = count_str - 1
+	local max_len = 0
+	for i = 1, count_str do
+		local lenth = string.len(menu_str[i])
+		if lenth > max_len then
+			max_len = lenth + 1
+		end
+	end
+	for i = 1, count_str do
+		paintutils.drawLine(men_x, men_y + i - 1, men_x + max_len, men_y + i - 1, color_bg)
+		term.setCursorPos(men_x + 1, men_y + i - 1)
+		if menu_str[i] == "---" then
+			term.setCursorPos(men_x, men_y + i - 1)
+			for a = 1, max_len + 1 do
+				write("-")
+			end
+		else
+			write(menu_str[i])
+		end
+	end
+end
