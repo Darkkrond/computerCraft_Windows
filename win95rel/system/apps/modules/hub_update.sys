@@ -1,0 +1,30 @@
+if Dj then
+	term.setCursorPos(4 * Dj_number + 4, 19)
+	term.setBackgroundColor(colors.white)
+	term.setTextColor(colors.black)
+	write(" Dj ")
+end
+if Paint then
+	term.setCursorPos(4 * paint_number + 4, 19)
+	term.setBackgroundColor(colors.yellow)
+	term.setTextColor(colors.red)
+	write("Draw")
+end
+if fm then
+	term.setCursorPos(4 * fm_number + 4, 19)
+	term.setBackgroundColor(colors.orange)
+	term.setTextColor(colors.green)
+	write(" Fm ")
+end
+if config then
+	term.setCursorPos(4 * config_number + 4, 19)
+	term.setBackgroundColor(colors.magenta)
+	term.setTextColor(colors.yellow)
+	write(" CP ")
+end
+if shop then
+	term.setCursorPos(4 * shop_number + 4, 19)
+	term.setBackgroundColor(colors.lightGray)
+    term.setTextColor(colors.yellow)
+    write("shop")
+end
