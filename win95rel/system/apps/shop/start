@@ -100,6 +100,7 @@ function shop_buttons()
 				github(app_get[(app_page * 4) - 2])
 			end
 			sleep(1)
+			read_config_OS()
 			shop_print_GUI()
 		elseif x > 45 and x < 51 and y > 6 and y < 10 and not (shop_app_list[(app_page * 4) - 2] == true) then
 			create_window(12, 5, "buy application", "Buy " .. app_name[(app_page * 4) - 2] .. "?", "", "", "", "info", p1)
