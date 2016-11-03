@@ -1,3 +1,4 @@
 <ee_by mnsbabydoll>
-term.setCursorPos(10, 10)
-write("test epta")
+term.setCursorPos(2, 1)
+print("Welcome on site this OS (Windows 95 CC edition)!!!")
+print("On this site will be writed about all news on our OS.")
