@@ -1,0 +1,10 @@
+<ee_by mnsbabydoll>
+term.setCursorPos(1,2)
+print("Welcome to the site of the Russian Nation")
+print("rysskij tekst vnizy")
+print("The russian base is the best base on the server")
+print("You can work on the Plane and work a Solder")
+print("The boss of the nation is the Metopoliten")
+print("Rysskij tekst. Rysskaya basa odna is lychshix na servere")
+print("Y nas vi mogete rebotat i soldatom i pilotom")
+print("Glava basi Metopoliten")
