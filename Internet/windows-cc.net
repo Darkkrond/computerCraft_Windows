@@ -1,4 +1,4 @@
 <ee_by mnsbabydoll>
-term.setCursorPos(1, 2)
+term.setCursorPos(2, 2)
 print("Welcome on site this OS (Windows 95 CC edition)!!!")
 print("On this site will be writed about all news on our OS.")
