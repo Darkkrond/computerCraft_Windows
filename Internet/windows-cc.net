@@ -1,4 +1,5 @@
 <ee_by mnsbabydoll>
-term.setCursorPos(2, 2)
-print("Welcome on site this OS (Windows 95 CC edition)!!!")
-print("On this site will be writed about all news on our OS.")
+term.setCursorPos(10, 2)
+write("Welcome on site this OS (Windows 95 CC edition)!!!")
+term.setCursorPos(15, 1)
+write("On this site will be writed about all news on our OS.")
