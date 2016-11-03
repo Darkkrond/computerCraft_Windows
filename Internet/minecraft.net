@@ -1,0 +1,14 @@
+<ee_by mnsbabydoll>
+term.setCursorPos(1, 2)
+
+paintutils.drawFilledBox(1, 2, 51, 18, colors.gray)
+term.setTextColor(colors.black)
+term.setCursorPos(22, 3)
+write("MINECRAFT")
+term.setCursorPos(1, 5)
+print("* Programmers")
+print("* Mods")
+print("* Servers")
+print("* About Game")
+term.setCursorPos(41, 18)
+write("CC Edition")
