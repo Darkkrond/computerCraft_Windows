@@ -1,0 +1,15 @@
+{
+"name": "Детская площадка",
+"type": "primitive",
+"quards": [
+	{"texture": "Textures/Bg_bottom.png", "pos": [-528, 0, -940, -528, 0, 940, 528, 0, 940, 528, 0, -940]},
+	{"texture": "Textures/Bg_side1.png", "pos": [-528, 0, 940, -528, 0, -940, -528, 720, -940, -528, 720, 940]},
+	{"texture": "Textures/Bg_side1.png", "pos": [528, 0, -940, 528, 0, 940, 528, 720, 940, 528, 720, -940]},
+	{"texture": "Textures/Bg_side2.png", "pos": [-528, 0, -940, 528, 0, -940, 528, 720, -940, -528, 720, -940]},
+	{"texture": "Textures/Bg_side2.png", "pos": [528, 0, 940, -528, 0, 940, -528, 720, 940, 528, 720, 940]},
+	{"texture": "Textures/Bg_top.png", "pos": [-528, 720, 940, -528, 720, -940, 528, 720, -940, 528, 720, 940]}
+],
+"loadingImage": "bg.png",
+"spawnPositions": [{"xCoord": -186, "yCoord": -517}, {"xCoord": -93, "yCoord": -517}, {"xCoord": 186, "yCoord": 517}, {"xCoord": 93, "yCoord": 517}],
+"mainZone": [-328, -610, 328, 610]
+}
