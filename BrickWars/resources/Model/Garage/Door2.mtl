@@ -1,0 +1,9 @@
+# Created by Metasequoia
+
+newmtl mat1
+Ka 0.59520 0.59040 0.60000
+Kd 0.99200 0.98400 1.00000
+Ks 0.00000 0.00000 0.00000
+Ns 5.00000
+map_Kd garage.png
+
