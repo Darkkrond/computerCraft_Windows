@@ -1,0 +1,10 @@
+{
+"name": "Поле",
+"type": "obj",
+"model": "Models/Pole.obj",
+"texture": "Textures/Pole.png",
+"sky": "Textures/Sky.png",
+"loadingImage": "bg.png",
+"spawnPositions": [{"xCoord": -600, "yCoord": -600}, {"xCoord": 600, "yCoord": 600}],
+"mainZone": [-980, -980, 980, 980]
+}
