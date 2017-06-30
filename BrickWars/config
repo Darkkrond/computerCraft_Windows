@@ -1,0 +1,12 @@
+1.1
+BrickWars.exe
+worlds/Playground/Playground.map
+worlds/Playground/Textures/Bg_bottom.png
+worlds/Playground/Textures/Bg_side1.png
+worlds/Playground/Textures/Bg_side2.png
+worlds/Playground/Textures/Bg_top.png
+worlds/Pole/Pole.map
+world/Pole/Models/Pole.mtl
+world/Pole/Models/Pole.obj
+world/Pole/Models/Pole.png
+world/Pole/Textures/Sky.png
