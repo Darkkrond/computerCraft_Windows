@@ -3,3 +3,4 @@ Android MQO:Beta_1.8
 AnrialWorldLauncher:1.8
 GlobalRemake:2.0
 MCPAdmin:1.0
+MetroWorldLauncher:1.0
