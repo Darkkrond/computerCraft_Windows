@@ -10,6 +10,6 @@
 	{"texture": "Textures/Bg_top.png", "pos": [-528, 720, 940, -528, 720, -940, 528, 720, -940, 528, 720, 940]}
 ],
 "loadingImage": "bg.png",
-"spawnPositions": [{"xCoord": -186, "yCoord": -517}, {"xCoord": -93, "yCoord": -517}, {"xCoord": 186, "yCoord": 517}, {"xCoord": 93, "yCoord": 517}],
+"spawnPositions": [{"xCoord": -186, "yCoord": -517}, {"xCoord": -93, "yCoord": -517}, {"xCoord": 186, "yCoord": -517}, {"xCoord": 93, "yCoord": -517}],
 "mainZone": [-328, -610, 328, 610]
 }

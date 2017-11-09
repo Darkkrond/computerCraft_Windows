@@ -1,0 +1,10 @@
+{
+"name": "Город",
+"type": "mqo",
+"model": "Models/Sity.mqo",
+"texture": "Textures/Sity.png",
+"sky": "Textures/Sky.png",
+"loadingImage": "bg.png",
+"spawnPositions": [{"xCoord": -600, "yCoord": -600}, {"xCoord": 600, "yCoord": 600}, {"xCoord": 600, "yCoord": -600}, {"xCoord": -600, "yCoord": 600}],
+"mainZone": [-980, -980, 980, 980]
+}
