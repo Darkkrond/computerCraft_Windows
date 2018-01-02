@@ -1,6 +1,6 @@
 SoftShop:1.0
 Android MQO:Beta_1.8
-AnrialWorldLauncher:1.8.1
+AnrialWorldLauncher:2.2
 GlobalRemake:2.0
 MCPAdmin:1.0
 MetroWorldLauncher:1.1
